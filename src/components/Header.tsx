@@ -96,8 +96,8 @@ export const Header: React.FC<HeaderProps> = ({
   const handleSelectRole = (newRole: UserRole) => {
     setShowRoleSelector(false);
 
-    // If switching to portal or public/pendaftar: NO PASSWORD NEEDED
-    if (newRole === 'portal' || newRole === 'public') {
+    // If switching to portal, public/pendaftar, or kiosk: NO PASSWORD NEEDED
+    if (newRole === 'portal' || newRole === 'public' || newRole === 'kiosk') {
       applyRoleChange(newRole);
       return;
     }
@@ -146,8 +146,6 @@ export const Header: React.FC<HeaderProps> = ({
       alternative = (settings.adminPin || '1234').toLowerCase();
     } else if (pendingRole === 'operator') {
       expected = (settings.operatorPassword || 'petugas123').toLowerCase();
-    } else if (pendingRole === 'kiosk') {
-      expected = (settings.kioskPassword || 'kiosk123').toLowerCase();
     } else if (pendingRole === 'display') {
       expected = (settings.displayPassword || 'tv123').toLowerCase();
     }
@@ -345,12 +343,12 @@ export const Header: React.FC<HeaderProps> = ({
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
                       <span>Kiosk Mandiri Warga</span>
-                      <span className="flex items-center gap-1 text-[10px] bg-amber-400/20 text-amber-300 px-1.5 py-0.2 rounded border border-amber-400/30">
-                        <Lock className="w-2.5 h-2.5 text-amber-400" />
-                        <span>Kunci</span>
+                      <span className="flex items-center gap-1 text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded border border-emerald-500/40">
+                        <Unlock className="w-2.5 h-2.5 text-emerald-400" />
+                        <span>Bebas</span>
                       </span>
                     </div>
-                    <div className="text-[10px] font-normal opacity-80">Layar Cetak Tiket Pintu Masuk</div>
+                    <div className="text-[10px] font-normal opacity-80">Layar Cetak Tiket (Bebas Password)</div>
                   </div>
                 </button>
 
@@ -673,8 +671,6 @@ export const Header: React.FC<HeaderProps> = ({
                       ? 'Akses Administrator'
                       : pendingRole === 'operator'
                       ? 'Akses Petugas Loket'
-                      : pendingRole === 'kiosk'
-                      ? 'Akses Kiosk Tiket'
                       : 'Akses Display TV'}
                   </h3>
                   <p className="text-[11px] text-slate-400">Verifikasi Password Peran</p>
@@ -698,8 +694,6 @@ export const Header: React.FC<HeaderProps> = ({
                 ? 'Masukkan Password atau PIN Administrator untuk beralih ke pusat kendali dan pengaturan sistem.'
                 : pendingRole === 'operator'
                 ? 'Masukkan Password Petugas Loket untuk membuka konsol pemanggilan antrian.'
-                : pendingRole === 'kiosk'
-                ? 'Masukkan Password Kiosk untuk mengunci layar terminal cetak tiket mandiri warga.'
                 : 'Masukkan Password Display TV untuk mengaktifkan monitor digital ruang tunggu.'}
             </p>
 
@@ -745,8 +739,6 @@ export const Header: React.FC<HeaderProps> = ({
                         ? `${settings.adminPassword || 'admin123'} (atau PIN ${settings.adminPin || '1234'})`
                         : pendingRole === 'operator'
                         ? (settings.operatorPassword || 'petugas123')
-                        : pendingRole === 'kiosk'
-                        ? (settings.kioskPassword || 'kiosk123')
                         : (settings.displayPassword || 'tv123')}
                     </span>
                   </p>

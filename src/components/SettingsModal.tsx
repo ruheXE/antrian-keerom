@@ -269,12 +269,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 <span>Keamanan Password Akses Layar Peran</span>
               </div>
               <span className="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full font-bold">
-                Pendaftar / Warga: Bebas Akses (Tanpa Password)
+                Kiosk & Pendaftar: Bebas Akses (Tanpa Password)
               </span>
             </div>
             <p className="text-[11px] text-slate-400 leading-relaxed">
-              Atur password untuk setiap layar operasional agar terisolasi dengan aman di masing-masing perangkat. 
-              Masyarakat umum / pendaftar dapat langsung melihat nomor antrian dan berkas persyaratan tanpa memerlukan password.
+              Atur password untuk layar operasional agar terisolasi dengan aman di masing-masing perangkat. 
+              Layar Kiosk cetak tiket dan Informasi Warga/Pendaftar dapat langsung dibuka tanpa memerlukan password.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
@@ -336,22 +336,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 />
               </div>
 
-              {/* Password Kiosk Mesin Tiket */}
-              <div className="bg-[#040a17] p-3 rounded-xl border border-blue-900/60">
+              {/* Kiosk Tiket & Pendaftar Bebas Password */}
+              <div className="bg-[#040a17] p-3 rounded-xl border border-emerald-900/50 flex flex-col justify-between">
                 <div className="flex items-center justify-between mb-1">
-                  <label className="text-xs font-bold text-yellow-300 flex items-center gap-1.5">
-                    <Ticket className="w-3.5 h-3.5 text-yellow-400" />
-                    <span>Password Kiosk Tiket</span>
+                  <label className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                    <Ticket className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Layar Kiosk Tiket Warga</span>
                   </label>
-                  <span className="text-[10px] text-slate-400 font-mono">Bawaan: kiosk123</span>
+                  <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-1.5 py-0.2 rounded border border-emerald-500/40">Bebas Akses</span>
                 </div>
-                <input
-                  type="text"
-                  value={formData.kioskPassword || 'kiosk123'}
-                  onChange={(e) => setFormData({ ...formData, kioskPassword: e.target.value })}
-                  className="w-full text-xs px-3 py-2 bg-[#07132c] text-white border border-blue-800 rounded-lg font-mono font-bold focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                  placeholder="kiosk123"
-                />
+                <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                  Layar Kiosk cetak tiket tidak memerlukan password agar masyarakat dapat langsung mengambil nomor antrian tanpa hambatan.
+                </p>
               </div>
             </div>
           </div>

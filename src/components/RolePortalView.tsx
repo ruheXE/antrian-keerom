@@ -140,16 +140,16 @@ export const RolePortalView: React.FC<RolePortalViewProps> = ({
 
         {/* 5 Kartu Layar Terpisah */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* 1. Layar Kiosk Mandiri Warga (Dilindungi Password) */}
-          <div className="bg-[#0a1736] border-2 border-amber-400/30 hover:border-amber-400 rounded-3xl p-6 shadow-xl flex flex-col justify-between transition-all duration-200 group relative">
+          {/* 1. Layar Kiosk Mandiri Warga (Bebas Akses / Tanpa Password) */}
+          <div className="bg-[#0a1736] border-2 border-amber-400/50 hover:border-amber-400 rounded-3xl p-6 shadow-xl flex flex-col justify-between transition-all duration-200 group relative">
             <div className="space-y-4">
               <div className="flex items-start justify-between">
                 <div className="w-14 h-14 rounded-2xl bg-amber-400/15 border border-amber-400/40 text-amber-400 flex items-center justify-center shadow-lg group-hover:scale-105 transition">
                   <Ticket className="w-7 h-7" />
                 </div>
-                <span className="text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-md bg-amber-400/10 text-amber-300 border border-amber-400/30 flex items-center gap-1.5">
-                  <Lock className="w-3 h-3 text-amber-400" />
-                  <span>Password: kiosk123</span>
+                <span className="text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-md bg-amber-400/10 text-amber-300 border border-amber-400/30 flex items-center gap-1.5 shadow-sm">
+                  <Unlock className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Bebas Akses (Pendaftar)</span>
                 </span>
               </div>
 
@@ -163,37 +163,27 @@ export const RolePortalView: React.FC<RolePortalViewProps> = ({
               </div>
 
               <div className="bg-[#07132c] p-3 rounded-xl border border-blue-900 text-xs space-y-1 text-slate-400">
-                <div className="flex items-center gap-1.5 text-slate-300 font-semibold">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
-                  Mode Terkunci (Bebas tombol Admin)
+                <div className="flex items-center gap-1.5 text-emerald-300 font-semibold">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  Bebas Akses untuk Warga / Pendaftar
                 </div>
                 <div className="flex items-center gap-1.5 text-slate-300 font-semibold">
                   <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
-                  Pendaftar ambil tiket tanpa password
+                  Mode Terkunci (Bebas tombol Admin)
                 </div>
               </div>
             </div>
 
             <div className="pt-6 mt-4 border-t border-blue-900/80 space-y-3">
               <button
-                onClick={() => requestRoleAccess({
-                  role: 'kiosk',
-                  targetTab: 'kiosk',
-                  title: 'Layar Kiosk Tiket Mandiri',
-                  subtitle: 'Otorisasi Terminal Mesin Tiket Lobi',
-                  description: 'Masukkan password untuk mengunci perangkat sebagai Mesin Tiket Sentuh Mandiri untuk warga pendaftar di lobi.',
-                  badge: 'Mesin Tiket Kiosk',
-                  expectedPassword: settings.kioskPassword || 'kiosk123',
-                  defaultHint: 'kiosk123',
-                  themeColor: 'amber'
-                })}
+                onClick={() => onSelectRole('kiosk', 'kiosk')}
                 className="w-full py-3 px-4 rounded-xl bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-400/20 transition"
               >
-                <KeyRound className="w-4 h-4 text-slate-950" />
                 <span>Buka Layar Kiosk Tiket</span>
+                <ArrowRight className="w-4 h-4" />
               </button>
-              <div className="text-[10px] text-slate-400 font-mono text-center truncate" title={`${currentUrl}?role=kiosk`}>
-                Password Bawaan: <span className="text-amber-300 font-bold font-mono">kiosk123</span>
+              <div className="text-[10px] text-emerald-400 font-semibold text-center truncate">
+                ✓ Akses Bebas Tanpa Perlu Password
               </div>
             </div>
           </div>
