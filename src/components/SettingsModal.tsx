@@ -15,7 +15,11 @@ import {
   MessageSquare,
   Phone,
   KeyRound,
-  Lock
+  Lock,
+  ShieldCheck,
+  Headphones,
+  Tv,
+  Ticket
 } from 'lucide-react';
 import { DEFAULT_SETTINGS } from '../data/servicesData';
 
@@ -257,27 +261,98 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </div>
           </div>
 
-          {/* Keamanan PIN Administrator */}
-          <div className="bg-[#07132c] border border-amber-400/40 rounded-2xl p-4 space-y-2">
-            <div className="flex items-center gap-2 text-amber-400 font-black text-xs uppercase tracking-wider">
-              <KeyRound className="w-4 h-4" />
-              <span>Keamanan PIN Administrator (Akses Layar Terpisah)</span>
+          {/* Keamanan Password Akses Role (Kecuali Pendaftar) */}
+          <div className="bg-[#07132c] border border-amber-400/40 rounded-2xl p-4 space-y-3">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center gap-2 text-amber-400 font-black text-xs uppercase tracking-wider">
+                <KeyRound className="w-4 h-4" />
+                <span>Keamanan Password Akses Layar Peran</span>
+              </div>
+              <span className="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full font-bold">
+                Pendaftar / Warga: Bebas Akses (Tanpa Password)
+              </span>
             </div>
-            <p className="text-[11px] text-slate-400">
-              PIN ini digunakan untuk membuka Panel Administrator dari perangkat lain atau saat berpindah peran agar warga/petugas tidak dapat mengubah data kedinasan.
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Atur password untuk setiap layar operasional agar terisolasi dengan aman di masing-masing perangkat. 
+              Masyarakat umum / pendaftar dapat langsung melihat nomor antrian dan berkas persyaratan tanpa memerlukan password.
             </p>
-            <div className="max-w-xs">
-              <label className="block text-xs font-bold text-slate-300 mb-1">
-                PIN Admin (4-8 Digit / Angka):
-              </label>
-              <input
-                type="text"
-                maxLength={8}
-                value={formData.adminPin || '1234'}
-                onChange={(e) => setFormData({ ...formData, adminPin: e.target.value })}
-                className="w-full text-sm px-3 py-2 bg-[#040a17] text-amber-300 border border-amber-400/50 rounded-xl font-mono tracking-widest font-bold focus:outline-none focus:ring-2 focus:ring-amber-400"
-                placeholder="1234"
-              />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              {/* Password Admin */}
+              <div className="bg-[#040a17] p-3 rounded-xl border border-blue-900/60">
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Password Admin</span>
+                  </label>
+                  <span className="text-[10px] text-slate-400 font-mono">Bawaan: admin123</span>
+                </div>
+                <input
+                  type="text"
+                  value={formData.adminPassword || formData.adminPin || 'admin123'}
+                  onChange={(e) => setFormData({ 
+                    ...formData, 
+                    adminPassword: e.target.value,
+                    adminPin: e.target.value 
+                  })}
+                  className="w-full text-xs px-3 py-2 bg-[#07132c] text-white border border-blue-800 rounded-lg font-mono font-bold focus:outline-none focus:ring-2 focus:ring-amber-400"
+                  placeholder="admin123"
+                />
+              </div>
+
+              {/* Password Petugas Loket */}
+              <div className="bg-[#040a17] p-3 rounded-xl border border-blue-900/60">
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs font-bold text-emerald-300 flex items-center gap-1.5">
+                    <Headphones className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Password Petugas Loket</span>
+                  </label>
+                  <span className="text-[10px] text-slate-400 font-mono">Bawaan: petugas123</span>
+                </div>
+                <input
+                  type="text"
+                  value={formData.operatorPassword || 'petugas123'}
+                  onChange={(e) => setFormData({ ...formData, operatorPassword: e.target.value })}
+                  className="w-full text-xs px-3 py-2 bg-[#07132c] text-white border border-blue-800 rounded-lg font-mono font-bold focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                  placeholder="petugas123"
+                />
+              </div>
+
+              {/* Password Layar Display TV */}
+              <div className="bg-[#040a17] p-3 rounded-xl border border-blue-900/60">
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs font-bold text-sky-300 flex items-center gap-1.5">
+                    <Tv className="w-3.5 h-3.5 text-sky-400" />
+                    <span>Password Layar Display TV</span>
+                  </label>
+                  <span className="text-[10px] text-slate-400 font-mono">Bawaan: tv123</span>
+                </div>
+                <input
+                  type="text"
+                  value={formData.displayPassword || 'tv123'}
+                  onChange={(e) => setFormData({ ...formData, displayPassword: e.target.value })}
+                  className="w-full text-xs px-3 py-2 bg-[#07132c] text-white border border-blue-800 rounded-lg font-mono font-bold focus:outline-none focus:ring-2 focus:ring-sky-400"
+                  placeholder="tv123"
+                />
+              </div>
+
+              {/* Password Kiosk Mesin Tiket */}
+              <div className="bg-[#040a17] p-3 rounded-xl border border-blue-900/60">
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs font-bold text-yellow-300 flex items-center gap-1.5">
+                    <Ticket className="w-3.5 h-3.5 text-yellow-400" />
+                    <span>Password Kiosk Tiket</span>
+                  </label>
+                  <span className="text-[10px] text-slate-400 font-mono">Bawaan: kiosk123</span>
+                </div>
+                <input
+                  type="text"
+                  value={formData.kioskPassword || 'kiosk123'}
+                  onChange={(e) => setFormData({ ...formData, kioskPassword: e.target.value })}
+                  className="w-full text-xs px-3 py-2 bg-[#07132c] text-white border border-blue-800 rounded-lg font-mono font-bold focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  placeholder="kiosk123"
+                />
+              </div>
             </div>
           </div>
 

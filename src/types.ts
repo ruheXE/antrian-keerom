@@ -93,6 +93,10 @@ export interface SystemSettings {
   smsGatewaySender: string;
   smsTemplate: string;
   adminPin: string;
+  adminPassword?: string;
+  operatorPassword?: string;
+  displayPassword?: string;
+  kioskPassword?: string;
 }
 
 export const KEEROM_DISTRICTS = [

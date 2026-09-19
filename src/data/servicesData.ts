@@ -160,5 +160,9 @@ export const DEFAULT_SETTINGS: SystemSettings = {
   smsEnabled: true,
   smsGatewaySender: 'DISDUKCAPIL-KEEROM',
   smsTemplate: 'Yth. Bpk/Ibu {NAMA}, Nomor Antrian Anda {NOMOR} sedang dipanggil di {LOKET} ({LAYANAN}) Disdukcapil Keerom. Silakan segera menuju loket pelayanan. Terima kasih.',
-  adminPin: '1234'
+  adminPin: '1234',
+  adminPassword: 'admin123',
+  operatorPassword: 'petugas123',
+  displayPassword: 'tv123',
+  kioskPassword: 'kiosk123',
 };
