@@ -1,0 +1,6 @@
+{
+  "name": "Sistem Antrian Disdukcapil Kabupaten Keerom",
+  "description": "Aplikasi antrian loket terpadu Dinas Kependudukan dan Pencatatan Sipil Kabupaten Keerom dilengkapi kiosk tiket, display TV ruang tunggu dengan panggilan suara, konsol petugas loket, dan statistik.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
