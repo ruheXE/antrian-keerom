@@ -37,18 +37,57 @@ import { StatsView } from './components/StatsView';
 import { AdminPanelView } from './components/AdminPanelView';
 import { TicketPrintModal } from './components/TicketPrintModal';
 import { SettingsModal } from './components/SettingsModal';
+import { RolePortalView } from './components/RolePortalView';
 import { SERVICES_DATA } from './data/servicesData';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>(() => {
+  const [userRole, setUserRole] = useState<UserRole>(() => {
+    if (typeof window === 'undefined') return 'portal';
     const params = new URLSearchParams(window.location.search);
-    const tab = params.get('tab') as ActiveTab | null;
-    if (tab && ['display', 'kiosk', 'operator', 'queue-list', 'requirements', 'stats', 'admin'].includes(tab)) {
-      return tab;
+    const roleParam = params.get('role') as UserRole | null;
+    if (roleParam && ['admin', 'operator', 'kiosk', 'display', 'public', 'portal'].includes(roleParam)) {
+      return roleParam;
     }
-    return 'display';
+    const tabParam = params.get('tab');
+    if (tabParam === 'kiosk') return 'kiosk';
+    if (tabParam === 'display') return 'display';
+    if (tabParam === 'operator') return 'operator';
+    if (tabParam === 'admin' || tabParam === 'stats') return 'admin';
+    if (tabParam === 'portal') return 'portal';
+
+    const storedRole = localStorage.getItem('dukcapil_active_role') as UserRole | null;
+    if (storedRole && ['admin', 'operator', 'kiosk', 'display', 'public', 'portal'].includes(storedRole)) {
+      return storedRole;
+    }
+    return 'portal';
   });
-  const [userRole, setUserRole] = useState<UserRole>('admin');
+
+  const [activeTab, setActiveTab] = useState<ActiveTab>(() => {
+    if (typeof window === 'undefined') return 'portal';
+    const params = new URLSearchParams(window.location.search);
+    const roleParam = params.get('role') as UserRole | null;
+    const tabParam = params.get('tab') as ActiveTab | null;
+
+    if (roleParam === 'kiosk' || tabParam === 'kiosk') return 'kiosk';
+    if (roleParam === 'display' || tabParam === 'display') return 'display';
+    if (roleParam === 'operator' || tabParam === 'operator') return 'operator';
+    if (roleParam === 'admin' || tabParam === 'admin') return 'admin';
+    if (roleParam === 'public') return 'queue-list';
+    if (roleParam === 'portal' || tabParam === 'portal') return 'portal';
+
+    if (tabParam && ['display', 'kiosk', 'operator', 'queue-list', 'requirements', 'stats', 'admin', 'portal'].includes(tabParam)) {
+      return tabParam;
+    }
+
+    const storedRole = localStorage.getItem('dukcapil_active_role');
+    if (storedRole === 'kiosk') return 'kiosk';
+    if (storedRole === 'display') return 'display';
+    if (storedRole === 'operator') return 'operator';
+    if (storedRole === 'admin') return 'admin';
+    if (storedRole === 'public') return 'queue-list';
+
+    return 'portal';
+  });
   const [displayScreen, setDisplayScreen] = useState<'all' | number>(() => {
     const params = new URLSearchParams(window.location.search);
     const screenParam = params.get('screen') || params.get('display');
@@ -94,6 +133,45 @@ export default function App() {
       window.removeEventListener('storage', handleSync);
     };
   }, [reloadFromStorage]);
+
+  // Synchronize role and screen state with URL query & localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('dukcapil_active_role', userRole);
+      const url = new URL(window.location.href);
+      url.searchParams.set('role', userRole);
+      url.searchParams.set('tab', activeTab);
+      if (displayScreen !== 'all') {
+        url.searchParams.set('screen', String(displayScreen));
+      } else {
+        url.searchParams.delete('screen');
+      }
+      window.history.replaceState({}, '', url.toString());
+    } catch {
+      // safe fallback
+    }
+  }, [userRole, activeTab, displayScreen]);
+
+  // Strict role-based screen isolation guard
+  useEffect(() => {
+    if (userRole === 'operator') {
+      if (['admin', 'stats', 'kiosk', 'display'].includes(activeTab)) {
+        setActiveTab('operator');
+      }
+    } else if (userRole === 'kiosk') {
+      if (activeTab !== 'kiosk') {
+        setActiveTab('kiosk');
+      }
+    } else if (userRole === 'display') {
+      if (activeTab !== 'display') {
+        setActiveTab('display');
+      }
+    } else if (userRole === 'public') {
+      if (['admin', 'stats', 'operator'].includes(activeTab)) {
+        setActiveTab('queue-list');
+      }
+    }
+  }, [userRole, activeTab]);
 
   // 1. Take ticket in Kiosk
   const handleTakeTicket = (data: {
@@ -462,8 +540,30 @@ export default function App() {
 
       {/* Main View Router */}
       <main className="flex-1">
+        {/* Role & Screen Portal View */}
+        {(activeTab === 'portal' || userRole === 'portal') && (
+          <RolePortalView
+            onSelectRole={(role, targetTab, screen) => {
+              setUserRole(role);
+              if (screen !== undefined) setDisplayScreen(screen);
+              const nextTab = (targetTab as ActiveTab) || (
+                role === 'admin' ? 'admin' :
+                role === 'operator' ? 'operator' :
+                role === 'kiosk' ? 'kiosk' :
+                role === 'display' ? 'display' :
+                role === 'portal' ? 'portal' : 'queue-list'
+              );
+              setActiveTab(nextTab);
+            }}
+            settings={settings}
+            counters={counters}
+            waitingCount={waitingCount}
+            totalToday={tickets.length}
+          />
+        )}
+
         {/* Admin Panel: Pantau, Ubah & Printout Laporan */}
-        {activeTab === 'admin' && (
+        {userRole !== 'portal' && activeTab === 'admin' && (
           <AdminPanelView
             tickets={tickets}
             counters={counters}
@@ -474,7 +574,7 @@ export default function App() {
         )}
 
         {/* Display TV: Multi-counter or Dedicated Single Counter Screen */}
-        {activeTab === 'display' && (
+        {userRole !== 'portal' && activeTab === 'display' && (
           <DisplayTvView
             tickets={tickets}
             counters={counters}
@@ -487,7 +587,7 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'kiosk' && (
+        {userRole !== 'portal' && activeTab === 'kiosk' && (
           <KioskView
             tickets={tickets}
             onTakeTicket={handleTakeTicket}
@@ -495,7 +595,7 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'operator' && (
+        {userRole !== 'portal' && activeTab === 'operator' && (
           <OperatorView
             counters={counters}
             tickets={tickets}
@@ -509,18 +609,18 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'queue-list' && (
+        {userRole !== 'portal' && activeTab === 'queue-list' && (
           <QueueListView
             tickets={tickets}
             onPrintTicket={(ticket) => setPrintedTicket(ticket)}
           />
         )}
 
-        {activeTab === 'requirements' && (
+        {userRole !== 'portal' && activeTab === 'requirements' && (
           <RequirementsView />
         )}
 
-        {activeTab === 'stats' && (
+        {userRole !== 'portal' && activeTab === 'stats' && (
           <StatsView
             tickets={tickets}
             counters={counters}

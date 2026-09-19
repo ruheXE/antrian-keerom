@@ -4,7 +4,7 @@ export type QueueType = 'REGULER' | 'PRIORITAS';
 
 export type QueueStatus = 'MENUNGGU' | 'DIPANGGIL' | 'SEDANG_DILAYANI' | 'SELESAI' | 'TERLEWAT' | 'DIBATALKAN';
 
-export type UserRole = 'public' | 'operator' | 'admin';
+export type UserRole = 'portal' | 'admin' | 'operator' | 'kiosk' | 'display' | 'public';
 
 export type DisplayScreenMode = 'all' | 1 | 2 | 3 | 4 | 5;
 
@@ -92,6 +92,7 @@ export interface SystemSettings {
   smsEnabled: boolean;
   smsGatewaySender: string;
   smsTemplate: string;
+  adminPin: string;
 }
 
 export const KEEROM_DISTRICTS = [

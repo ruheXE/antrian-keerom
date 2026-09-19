@@ -13,7 +13,9 @@ import {
   Building,
   Check,
   MessageSquare,
-  Phone
+  Phone,
+  KeyRound,
+  Lock
 } from 'lucide-react';
 import { DEFAULT_SETTINGS } from '../data/servicesData';
 
@@ -251,6 +253,30 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 value={formData.officeRegency}
                 onChange={(e) => setFormData({ ...formData, officeRegency: e.target.value })}
                 className="w-full text-xs px-3 py-2 bg-[#07132c] text-white border border-blue-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 font-semibold"
+              />
+            </div>
+          </div>
+
+          {/* Keamanan PIN Administrator */}
+          <div className="bg-[#07132c] border border-amber-400/40 rounded-2xl p-4 space-y-2">
+            <div className="flex items-center gap-2 text-amber-400 font-black text-xs uppercase tracking-wider">
+              <KeyRound className="w-4 h-4" />
+              <span>Keamanan PIN Administrator (Akses Layar Terpisah)</span>
+            </div>
+            <p className="text-[11px] text-slate-400">
+              PIN ini digunakan untuk membuka Panel Administrator dari perangkat lain atau saat berpindah peran agar warga/petugas tidak dapat mengubah data kedinasan.
+            </p>
+            <div className="max-w-xs">
+              <label className="block text-xs font-bold text-slate-300 mb-1">
+                PIN Admin (4-8 Digit / Angka):
+              </label>
+              <input
+                type="text"
+                maxLength={8}
+                value={formData.adminPin || '1234'}
+                onChange={(e) => setFormData({ ...formData, adminPin: e.target.value })}
+                className="w-full text-sm px-3 py-2 bg-[#040a17] text-amber-300 border border-amber-400/50 rounded-xl font-mono tracking-widest font-bold focus:outline-none focus:ring-2 focus:ring-amber-400"
+                placeholder="1234"
               />
             </div>
           </div>

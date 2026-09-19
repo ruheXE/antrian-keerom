@@ -159,5 +159,6 @@ export const DEFAULT_SETTINGS: SystemSettings = {
   runningText: 'SELAMAT DATANG DI DISDUKCAPIL KABUPATEN KEEROM • KWA NE SANGKEI (BERSATU UNTUK MAJU) • SEMUA PELAYANAN ADMINISTRASI KEPENDUDUKAN GRATIS TANPA PUNGUTAN BIAYA • PASTIKAN DOKUMEN ANDA LENGKAP SEBELUM MENUJU KE LOKET • JAM PELAYANAN: SENIN - JUMAT PUKUL 08.00 - 15.00 WIT • GERAKAN INDONESIA SADAR ADMINDUK (GISA)',
   smsEnabled: true,
   smsGatewaySender: 'DISDUKCAPIL-KEEROM',
-  smsTemplate: 'Yth. Bpk/Ibu {NAMA}, Nomor Antrian Anda {NOMOR} sedang dipanggil di {LOKET} ({LAYANAN}) Disdukcapil Keerom. Silakan segera menuju loket pelayanan. Terima kasih.'
+  smsTemplate: 'Yth. Bpk/Ibu {NAMA}, Nomor Antrian Anda {NOMOR} sedang dipanggil di {LOKET} ({LAYANAN}) Disdukcapil Keerom. Silakan segera menuju loket pelayanan. Terima kasih.',
+  adminPin: '1234'
 };
