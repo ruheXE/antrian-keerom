@@ -433,8 +433,22 @@ export const RolePortalView: React.FC<RolePortalViewProps> = ({
       )}
 
       {/* Footer Info */}
-      <footer className="mt-8 pt-4 border-t border-blue-950 text-center text-xs text-slate-400">
-        Dinas Kependudukan dan Pencatatan Sipil Kabupaten Keerom • Gedung Pelayanan Adminduk Terpadu • Papua
+      <footer className="mt-8 pt-5 border-t border-blue-950 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+        <div>
+          Dinas Kependudukan dan Pencatatan Sipil Kabupaten Keerom • Gedung Pelayanan Adminduk Terpadu • Papua
+        </div>
+        <div className="flex items-center gap-1.5 text-slate-300">
+          <span>Aplikasi dibuat oleh:</span>
+          <span className="font-bold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/30">
+            heraX
+          </span>
+          <a
+            href="tel:082189585776"
+            className="text-emerald-400 hover:text-emerald-300 font-mono font-bold hover:underline"
+          >
+            (082189585776)
+          </a>
+        </div>
       </footer>
     </div>
   );

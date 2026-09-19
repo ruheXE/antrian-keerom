@@ -459,16 +459,24 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
       </div>
 
       {/* Bottom Running Text Marquee in Navy & Yellow */}
-      <div className="bg-[#060e20] border-t-2 border-amber-400 px-4 py-2.5 text-amber-200 overflow-hidden flex items-center relative shadow-lg">
-        <div className="bg-amber-400 text-slate-950 font-black text-[11px] px-3 py-1 rounded-md mr-3 uppercase tracking-wider shrink-0 flex items-center gap-1.5 shadow-md">
-          <Megaphone className="w-3.5 h-3.5 text-slate-950" />
-          <span>Warta Dukcapil Keerom</span>
+      <div className="bg-[#060e20] border-t-2 border-amber-400 px-4 py-2 text-amber-200 overflow-hidden flex items-center justify-between relative shadow-lg">
+        <div className="flex items-center overflow-hidden flex-1 mr-4">
+          <div className="bg-amber-400 text-slate-950 font-black text-[11px] px-3 py-1 rounded-md mr-3 uppercase tracking-wider shrink-0 flex items-center gap-1.5 shadow-md">
+            <Megaphone className="w-3.5 h-3.5 text-slate-950" />
+            <span>Warta Dukcapil Keerom</span>
+          </div>
+
+          <div className="marquee-container flex-1 overflow-hidden whitespace-nowrap">
+            <div className="inline-block animate-marquee font-bold text-xs sm:text-sm tracking-wide text-amber-100">
+              {settings.runningText}
+            </div>
+          </div>
         </div>
 
-        <div className="marquee-container flex-1 overflow-hidden whitespace-nowrap">
-          <div className="inline-block animate-marquee font-bold text-xs sm:text-sm tracking-wide text-amber-100">
-            {settings.runningText}
-          </div>
+        <div className="hidden lg:flex items-center gap-1.5 text-[11px] text-slate-400 shrink-0 font-medium pl-3 border-l border-blue-900/80">
+          <span>Aplikasi:</span>
+          <span className="text-amber-400 font-bold">heraX</span>
+          <span className="text-emerald-400 font-mono font-bold">(082189585776)</span>
         </div>
       </div>
     </div>

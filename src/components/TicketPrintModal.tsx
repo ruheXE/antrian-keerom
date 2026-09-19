@@ -71,6 +71,11 @@ export const TicketPrintModal: React.FC<TicketPrintModalProps> = ({
 
             {/* Receipt Header */}
             <div className="border-b border-dashed border-slate-300 pb-3">
+              <img
+                src="/Lambang_Kabupaten_Keerom2.png"
+                alt="Lambang Kabupaten Keerom"
+                className="w-10 h-auto mx-auto mb-1 object-contain"
+              />
               <div className="text-[11px] font-bold tracking-wider text-slate-500 uppercase">
                 {settings.officeRegency}
               </div>
@@ -171,6 +176,9 @@ export const TicketPrintModal: React.FC<TicketPrintModalProps> = ({
               *Harap perhatikan layar monitor dan panggilan suara.
               <br />
               Pelayanan Adminduk <span className="font-bold text-[#0a1736]">GRATIS</span> (Tanpa Pungutan).
+              <div className="mt-2 pt-1 border-t border-dotted border-slate-200 text-[9px] text-slate-400">
+                Sistem Antrian oleh <span className="font-semibold text-slate-600">heraX (082189585776)</span>
+              </div>
             </div>
           </div>
         </div>

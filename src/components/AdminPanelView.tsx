@@ -959,6 +959,12 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
                   <div className="text-slate-600 text-[11px]">NIP. 19710315 199803 1 007</div>
                 </div>
               </div>
+
+              {/* Print Document Footnote */}
+              <div className="mt-8 pt-2 border-t border-dotted border-slate-300 text-[10px] text-slate-400 font-sans flex items-center justify-between">
+                <span>Dokumen Resmi Disdukcapil Kabupaten Keerom • Semboyan: "Tamne Yisan Kefase"</span>
+                <span>Sistem Antrian dikembangkan oleh: <strong>heraX (082189585776)</strong></span>
+              </div>
             </div>
           </div>
         )}
