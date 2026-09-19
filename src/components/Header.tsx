@@ -21,7 +21,8 @@ import {
   Eye,
   EyeOff,
   KeyRound,
-  X
+  X,
+  ChevronDown
 } from 'lucide-react';
 import { SystemSettings, UserRole } from '../types';
 import { playChime } from '../services/audioService';
@@ -169,38 +170,37 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="bg-[#0a1633] text-white border-b border-blue-900 sticky top-0 z-40 shadow-xl">
-      {/* Top Banner with Motto & Status - Navy & Yellow Palette */}
-      <div className="bg-gradient-to-r from-[#060e20] via-[#0e1f44] to-[#060e20] px-4 py-1.5 text-xs border-b border-amber-400/30 flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2 text-amber-300">
-          <span className="inline-block w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shadow-sm shadow-amber-400" />
-          <span className="font-extrabold tracking-wide uppercase text-white">SISTEM ANTRIAN TERPADU DISDUKCAPIL KEEROM</span>
-          <span className="hidden sm:inline text-amber-400/70">•</span>
-          <span className="hidden sm:inline italic text-amber-300 font-medium">"Kwa Ne Sangkei - Bersatu untuk Maju"</span>
+    <header className="bg-[#08142c] text-white border-b border-blue-900/60 sticky top-0 z-40 shadow-lg">
+      {/* Top Banner with Motto & Status - Navy & Amber Palette */}
+      <div className="bg-[#050d1e] px-4 sm:px-6 py-2 text-xs border-b border-blue-950 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5 text-slate-300">
+          <span className="w-2 h-2 rounded-full bg-amber-400" />
+          <span className="font-bold tracking-wider uppercase text-slate-100 text-[11px]">Sistem Antrian Terpadu Disdukcapil Keerom</span>
+          <span className="hidden sm:inline text-slate-600">•</span>
+          <span className="hidden sm:inline text-slate-400 font-medium text-[11px]">"Kwa Ne Sangkei - Bersatu untuk Maju"</span>
         </div>
         
         <div className="flex items-center gap-3 text-slate-300">
           {/* Waiting queue badge */}
-          <div className="flex items-center gap-1.5 bg-[#07132c] px-2.5 py-0.5 rounded-full text-[11px] border border-blue-900">
-            <span className="w-2 h-2 rounded-full bg-amber-400" />
-            <span className="text-slate-300">Antrian Menunggu:</span>
-            <span className="font-bold text-amber-400 font-mono">{waitingCount} orang</span>
+          <div className="flex items-center gap-2 bg-[#0a1636] px-3 py-1 rounded-md text-[11px] border border-blue-900/50">
+            <span className="text-slate-400">Antrian Menunggu:</span>
+            <span className="font-bold text-amber-400 font-mono text-xs">{waitingCount}</span>
           </div>
 
           {/* Clock WIT */}
-          <div className="flex items-center gap-1.5 font-mono text-amber-300 font-extrabold bg-[#050b18] px-2.5 py-0.5 rounded-md border border-blue-900">
+          <div className="flex items-center gap-1.5 font-mono text-amber-300 font-semibold bg-[#0a1636] px-3 py-1 rounded-md text-xs border border-blue-900/50">
             <Clock className="w-3.5 h-3.5 text-amber-400" />
             <span>{currentTime} WIT</span>
-            <span className="text-slate-400 text-[10px] hidden md:inline">({currentDate})</span>
+            <span className="text-slate-400 text-[10px] hidden md:inline font-sans">({currentDate})</span>
           </div>
         </div>
       </div>
 
       {/* Main Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
         {/* Identity */}
         <div 
-          className="flex items-center gap-3 cursor-pointer" 
+          className="flex items-center gap-3 cursor-pointer group" 
           onClick={() => {
             if (userRole === 'admin') setActiveTab('admin');
             else if (userRole === 'operator') setActiveTab('operator');
@@ -212,14 +212,14 @@ export const Header: React.FC<HeaderProps> = ({
           <KeeromLogo size="md" />
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-base sm:text-xl font-black tracking-tight text-white leading-tight">
+              <h1 className="text-base sm:text-lg font-bold tracking-tight text-white leading-tight group-hover:text-amber-300 transition-colors">
                 DISDUKCAPIL KAB. KEEROM
               </h1>
-              <span className="hidden lg:inline text-[10px] uppercase font-black bg-amber-400 text-slate-950 px-2 py-0.5 rounded-md shadow-xs">
+              <span className="hidden lg:inline text-[10px] uppercase font-bold bg-amber-400 text-slate-950 px-2 py-0.5 rounded">
                 PROVINSI PAPUA
               </span>
             </div>
-            <p className="text-[11px] text-slate-300 hidden sm:block">
+            <p className="text-xs text-slate-400 hidden sm:block mt-0.5">
               Dinas Kependudukan dan Pencatatan Sipil • Layanan Prima & 100% Bebas Biaya (Gratis)
             </p>
           </div>
@@ -233,18 +233,18 @@ export const Header: React.FC<HeaderProps> = ({
               id="role-selector-btn"
               onClick={() => setShowRoleSelector(!showRoleSelector)}
               title="Pilih Akses Layar Terpisah"
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition border shadow-xs ${
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition border ${
                 userRole === 'admin'
-                  ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-amber-400/20'
+                  ? 'bg-amber-400 text-slate-950 border-amber-300 hover:bg-amber-300'
                   : userRole === 'operator'
-                  ? 'bg-emerald-600 text-white border-emerald-400/50'
+                  ? 'bg-emerald-600 text-white border-emerald-500 hover:bg-emerald-500'
                   : userRole === 'kiosk'
-                  ? 'bg-amber-500/20 text-amber-300 border-amber-400'
+                  ? 'bg-[#0f244f] text-amber-300 border-amber-400/50 hover:bg-[#143069]'
                   : userRole === 'display'
-                  ? 'bg-blue-900 text-amber-300 border-amber-400/40'
+                  ? 'bg-[#0f244f] text-sky-300 border-sky-400/50 hover:bg-[#143069]'
                   : userRole === 'portal'
-                  ? 'bg-[#102452] text-amber-300 border-amber-400/60'
-                  : 'bg-slate-800 text-slate-200 border-slate-700'
+                  ? 'bg-[#0f244f] text-slate-200 border-blue-800 hover:bg-[#143069]'
+                  : 'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700'
               }`}
             >
               {userRole === 'admin' ? (
@@ -254,13 +254,13 @@ export const Header: React.FC<HeaderProps> = ({
               ) : userRole === 'kiosk' ? (
                 <Ticket className="w-4 h-4 text-amber-400" />
               ) : userRole === 'display' ? (
-                <Tv className="w-4 h-4 text-amber-400" />
+                <Tv className="w-4 h-4 text-sky-400" />
               ) : userRole === 'portal' ? (
                 <LayoutGrid className="w-4 h-4 text-amber-400" />
               ) : (
                 <UserCheck className="w-4 h-4 text-slate-300" />
               )}
-              <span className="uppercase text-[11px]">
+              <span className="text-xs">
                 {userRole === 'admin' 
                   ? 'Layar: Admin' 
                   : userRole === 'operator' 
@@ -273,120 +273,121 @@ export const Header: React.FC<HeaderProps> = ({
                   ? 'Portal Layar'
                   : 'Layar: Publik'}
               </span>
+              <ChevronDown className="w-3.5 h-3.5 opacity-70" />
             </button>
 
             {/* Role Dropdown */}
             {showRoleSelector && (
-              <div className="absolute right-0 mt-2 w-64 bg-[#0c1a38] border-2 border-amber-400/80 rounded-2xl p-2 shadow-2xl z-50 animate-in fade-in text-xs space-y-1">
-                <div className="text-[10px] uppercase font-bold text-amber-400 px-2 py-1 tracking-wider border-b border-blue-900/60 mb-1">
-                  PILIH HAK AKSES / LAYAR TERPISAH
+              <div className="absolute right-0 mt-2 w-64 bg-[#0a1633] border border-blue-800/80 rounded-xl p-2 shadow-xl z-50 animate-in fade-in text-xs space-y-1">
+                <div className="text-[10px] uppercase font-bold text-slate-400 px-2 py-1 tracking-wider border-b border-blue-900/60 mb-1">
+                  Pilih Layar & Hak Akses
                 </div>
 
                 <button
                   onClick={() => handleSelectRole('portal')}
-                  className={`w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 font-bold transition ${
-                    userRole === 'portal' ? 'bg-amber-400 text-slate-950' : 'hover:bg-blue-900 text-slate-200'
+                  className={`w-full text-left px-3 py-2 rounded-lg flex items-center gap-2.5 font-medium transition ${
+                    userRole === 'portal' ? 'bg-amber-400 text-slate-950 font-bold' : 'hover:bg-[#102450] text-slate-200'
                   }`}
                 >
                   <LayoutGrid className="w-4 h-4 text-amber-400" />
                   <div>
                     <div>Portal Pemilihan Layar</div>
-                    <div className="text-[10px] font-normal opacity-80">Menu utama pemilihan perangkat</div>
+                    <div className="text-[10px] opacity-75">Tampilan awal semua perangkat</div>
                   </div>
                 </button>
 
                 <button
                   onClick={() => handleSelectRole('admin')}
-                  className={`w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 font-bold transition ${
-                    userRole === 'admin' ? 'bg-amber-400 text-slate-950' : 'hover:bg-blue-900 text-slate-200'
+                  className={`w-full text-left px-3 py-2 rounded-lg flex items-center gap-2.5 font-medium transition ${
+                    userRole === 'admin' ? 'bg-amber-400 text-slate-950 font-bold' : 'hover:bg-[#102450] text-slate-200'
                   }`}
                 >
                   <ShieldCheck className="w-4 h-4 text-amber-400" />
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
                       <span>Administrator</span>
-                      <span className="flex items-center gap-1 text-[10px] bg-amber-400/20 text-amber-300 px-1.5 py-0.2 rounded border border-amber-400/30">
+                      <span className="flex items-center gap-1 text-[10px] bg-amber-400/10 text-amber-300 px-1.5 py-0.5 rounded border border-amber-400/20">
                         <Lock className="w-2.5 h-2.5 text-amber-400" />
                         <span>Kunci</span>
                       </span>
                     </div>
-                    <div className="text-[10px] font-normal opacity-80">Pantau, Ubah & Cetak Laporan</div>
+                    <div className="text-[10px] opacity-75">Pantau, Ubah & Cetak Laporan</div>
                   </div>
                 </button>
 
                 <button
                   onClick={() => handleSelectRole('operator')}
-                  className={`w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 font-bold transition ${
-                    userRole === 'operator' ? 'bg-amber-400 text-slate-950' : 'hover:bg-blue-900 text-slate-200'
+                  className={`w-full text-left px-3 py-2 rounded-lg flex items-center gap-2.5 font-medium transition ${
+                    userRole === 'operator' ? 'bg-amber-400 text-slate-950 font-bold' : 'hover:bg-[#102450] text-slate-200'
                   }`}
                 >
                   <Headphones className="w-4 h-4 text-emerald-400" />
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
                       <span>Petugas Loket</span>
-                      <span className="flex items-center gap-1 text-[10px] bg-emerald-400/20 text-emerald-300 px-1.5 py-0.2 rounded border border-emerald-400/30">
+                      <span className="flex items-center gap-1 text-[10px] bg-emerald-400/10 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-400/20">
                         <Lock className="w-2.5 h-2.5 text-emerald-400" />
                         <span>Kunci</span>
                       </span>
                     </div>
-                    <div className="text-[10px] font-normal opacity-80">Panggil & Layani Pemohon</div>
+                    <div className="text-[10px] opacity-75">Panggil & Layani Pemohon</div>
                   </div>
                 </button>
 
                 <button
                   onClick={() => handleSelectRole('kiosk')}
-                  className={`w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 font-bold transition ${
-                    userRole === 'kiosk' ? 'bg-amber-400 text-slate-950' : 'hover:bg-blue-900 text-slate-200'
+                  className={`w-full text-left px-3 py-2 rounded-lg flex items-center gap-2.5 font-medium transition ${
+                    userRole === 'kiosk' ? 'bg-amber-400 text-slate-950 font-bold' : 'hover:bg-[#102450] text-slate-200'
                   }`}
                 >
                   <Ticket className="w-4 h-4 text-amber-400" />
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
                       <span>Kiosk Mandiri Warga</span>
-                      <span className="flex items-center gap-1 text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded border border-emerald-500/40">
+                      <span className="flex items-center gap-1 text-[10px] bg-emerald-500/10 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-500/20">
                         <Unlock className="w-2.5 h-2.5 text-emerald-400" />
                         <span>Bebas</span>
                       </span>
                     </div>
-                    <div className="text-[10px] font-normal opacity-80">Layar Cetak Tiket (Bebas Password)</div>
+                    <div className="text-[10px] opacity-75">Layar Cetak Tiket (Bebas Password)</div>
                   </div>
                 </button>
 
                 <button
                   onClick={() => handleSelectRole('display')}
-                  className={`w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 font-bold transition ${
-                    userRole === 'display' ? 'bg-amber-400 text-slate-950' : 'hover:bg-blue-900 text-slate-200'
+                  className={`w-full text-left px-3 py-2 rounded-lg flex items-center gap-2.5 font-medium transition ${
+                    userRole === 'display' ? 'bg-amber-400 text-slate-950 font-bold' : 'hover:bg-[#102450] text-slate-200'
                   }`}
                 >
                   <Tv className="w-4 h-4 text-sky-400" />
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
                       <span>Display TV Ruang Tunggu</span>
-                      <span className="flex items-center gap-1 text-[10px] bg-sky-400/20 text-sky-300 px-1.5 py-0.2 rounded border border-sky-400/30">
+                      <span className="flex items-center gap-1 text-[10px] bg-sky-400/10 text-sky-300 px-1.5 py-0.5 rounded border border-sky-400/20">
                         <Lock className="w-2.5 h-2.5 text-sky-400" />
                         <span>Kunci</span>
                       </span>
                     </div>
-                    <div className="text-[10px] font-normal opacity-80">Monitor TV Utama & Per Loket</div>
+                    <div className="text-[10px] opacity-75">Monitor TV Utama & Per Loket</div>
                   </div>
                 </button>
 
                 <button
                   onClick={() => handleSelectRole('public')}
-                  className={`w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 font-bold transition ${
-                    userRole === 'public' ? 'bg-amber-400 text-slate-950' : 'hover:bg-blue-900 text-slate-200'
+                  className={`w-full text-left px-3 py-2 rounded-lg flex items-center gap-2.5 font-medium transition ${
+                    userRole === 'public' ? 'bg-amber-400 text-slate-950 font-bold' : 'hover:bg-[#102450] text-slate-200'
                   }`}
                 >
                   <UserCheck className="w-4 h-4 text-emerald-400" />
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
                       <span>Informasi Warga / Pendaftar</span>
-                      <span className="flex items-center gap-1 text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded border border-emerald-500/40">
+                      <span className="flex items-center gap-1 text-[10px] bg-emerald-500/10 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-500/20">
                         <Unlock className="w-2.5 h-2.5 text-emerald-400" />
                         <span>Bebas</span>
                       </span>
                     </div>
-                    <div className="text-[10px] font-normal opacity-80">Akses Terbuka Tanpa Password</div>
+                    <div className="text-[10px] opacity-75">Akses Terbuka Tanpa Password</div>
                   </div>
                 </button>
               </div>
@@ -398,14 +399,14 @@ export const Header: React.FC<HeaderProps> = ({
             id="test-audio-chime-btn"
             onClick={handleTestAudio}
             title="Uji Suara Bel Panggilan"
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold border transition ${
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium border transition ${
               audioTesting
-                ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-sm'
-                : 'bg-[#0e214d] hover:bg-[#12285a] text-slate-200 border-blue-900'
+                ? 'bg-amber-400 text-slate-950 border-amber-300'
+                : 'bg-[#0f244f] hover:bg-[#143069] text-slate-200 border-blue-800/80'
             }`}
           >
             {settings.soundEnabled ? (
-              <Volume2 className={`w-4 h-4 ${audioTesting ? 'animate-bounce text-slate-950' : 'text-amber-400'}`} />
+              <Volume2 className={`w-4 h-4 ${audioTesting ? 'text-slate-950' : 'text-amber-400'}`} />
             ) : (
               <VolumeX className="w-4 h-4 text-rose-400" />
             )}
@@ -418,7 +419,7 @@ export const Header: React.FC<HeaderProps> = ({
               id="open-settings-btn"
               onClick={onOpenSettings}
               title="Pengaturan Sistem"
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold bg-[#0e214d] hover:bg-[#12285a] text-slate-200 border border-blue-900 transition"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium bg-[#0f244f] hover:bg-[#143069] text-slate-200 border border-blue-800/80 transition"
             >
               <Settings className="w-4 h-4 text-amber-400" />
               <span className="hidden md:inline">Pengaturan</span>
@@ -430,7 +431,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               onClick={() => handleSelectRole('portal')}
               title="Kembali ke Portal Pemilihan Layar"
-              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold bg-[#07132c] hover:bg-[#0c1a38] text-amber-300 border border-amber-400/40 transition"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium bg-[#0a1636] hover:bg-[#0f2250] text-amber-300 border border-blue-800/80 transition"
             >
               <LayoutGrid className="w-3.5 h-3.5 text-amber-400" />
               <span className="hidden sm:inline">Ganti Layar</span>
@@ -441,31 +442,31 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Navigation Tabs Bar - Filtered strictly by role */}
       {userRole !== 'portal' && userRole !== 'kiosk' && userRole !== 'display' && (
-        <div className="bg-[#060e20] border-t border-blue-900/80 px-4 sm:px-6 overflow-x-auto scrollbar-none">
-          <div className="max-w-7xl mx-auto flex items-center gap-1 sm:gap-2 py-1.5">
+        <div className="bg-[#050d1e] border-t border-blue-900/60 px-4 sm:px-6 overflow-x-auto scrollbar-none">
+          <div className="max-w-7xl mx-auto flex items-center gap-1 sm:gap-2 py-2">
             {/* ADMIN ROLE TABS */}
             {userRole === 'admin' && (
               <>
                 <button
                   id="nav-tab-admin"
                   onClick={() => setActiveTab('admin')}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-black transition whitespace-nowrap border ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap border ${
                     activeTab === 'admin'
-                      ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-md shadow-amber-400/20 ring-1 ring-amber-400'
-                      : 'text-amber-300 hover:text-white bg-blue-950/60 hover:bg-blue-900/80 border-amber-400/40'
+                      ? 'bg-amber-400 text-slate-950 border-amber-300'
+                      : 'text-amber-300 hover:text-white bg-[#0a1636] hover:bg-[#0f2450] border-blue-900/80'
                   }`}
                 >
                   <ShieldCheck className="w-4 h-4" />
-                  <span>PANEL ADMIN (PANTAU, UBAH, LAPORAN)</span>
+                  <span>Panel Admin</span>
                 </button>
 
                 <button
                   id="nav-tab-stats"
                   onClick={() => setActiveTab('stats')}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition whitespace-nowrap border ${
                     activeTab === 'stats'
-                      ? 'bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/20'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                      ? 'bg-amber-400 text-slate-950 font-semibold border-amber-300'
+                      : 'text-slate-300 hover:text-white hover:bg-[#0a1636] border-transparent'
                   }`}
                 >
                   <BarChart3 className="w-4 h-4 text-amber-400" />
@@ -475,36 +476,36 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   id="nav-tab-queue-list"
                   onClick={() => setActiveTab('queue-list')}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition whitespace-nowrap border ${
                     activeTab === 'queue-list'
-                      ? 'bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/20'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                      ? 'bg-amber-400 text-slate-950 font-semibold border-amber-300'
+                      : 'text-slate-300 hover:text-white hover:bg-[#0a1636] border-transparent'
                   }`}
                 >
                   <ListOrdered className="w-4 h-4 text-amber-400" />
-                  <span>Daftar Seluruh Antrian</span>
+                  <span>Daftar Antrian</span>
                 </button>
 
                 <button
                   id="nav-tab-operator"
                   onClick={() => setActiveTab('operator')}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition whitespace-nowrap border ${
                     activeTab === 'operator'
-                      ? 'bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/20'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                      ? 'bg-amber-400 text-slate-950 font-semibold border-amber-300'
+                      : 'text-slate-300 hover:text-white hover:bg-[#0a1636] border-transparent'
                   }`}
                 >
                   <Headphones className="w-4 h-4 text-amber-400" />
-                  <span>Konsol Petugas Loket</span>
+                  <span>Konsol Petugas</span>
                 </button>
 
                 <button
                   id="nav-tab-display"
                   onClick={() => setActiveTab('display')}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition whitespace-nowrap border ${
                     activeTab === 'display'
-                      ? 'bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/20'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                      ? 'bg-amber-400 text-slate-950 font-semibold border-amber-300'
+                      : 'text-slate-300 hover:text-white hover:bg-[#0a1636] border-transparent'
                   }`}
                 >
                   <Tv className="w-4 h-4 text-amber-400" />
@@ -514,14 +515,14 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   id="nav-tab-kiosk"
                   onClick={() => setActiveTab('kiosk')}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition whitespace-nowrap border ${
                     activeTab === 'kiosk'
-                      ? 'bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/20'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                      ? 'bg-amber-400 text-slate-950 font-semibold border-amber-300'
+                      : 'text-slate-300 hover:text-white hover:bg-[#0a1636] border-transparent'
                   }`}
                 >
                   <Ticket className="w-4 h-4 text-amber-400" />
-                  <span>Kios Ambil Tiket</span>
+                  <span>Kiosk Tiket</span>
                 </button>
               </>
             )}
@@ -532,23 +533,23 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   id="nav-tab-operator"
                   onClick={() => setActiveTab('operator')}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-black transition whitespace-nowrap border ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap border ${
                     activeTab === 'operator'
-                      ? 'bg-emerald-500 text-slate-950 border-emerald-300 shadow-md ring-1 ring-emerald-400'
-                      : 'text-emerald-300 hover:text-white bg-emerald-950/50 border-emerald-500/40'
+                      ? 'bg-emerald-500 text-slate-950 border-emerald-400'
+                      : 'text-emerald-300 hover:text-white bg-emerald-950/40 border-emerald-500/30'
                   }`}
                 >
                   <Headphones className="w-4 h-4" />
-                  <span>KONSOL PANGGILAN LOKET</span>
+                  <span>Konsol Panggilan Loket</span>
                 </button>
 
                 <button
                   id="nav-tab-queue-list"
                   onClick={() => setActiveTab('queue-list')}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition whitespace-nowrap border ${
                     activeTab === 'queue-list'
-                      ? 'bg-amber-400 text-slate-950 shadow-sm'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                      ? 'bg-amber-400 text-slate-950 font-semibold border-amber-300'
+                      : 'text-slate-300 hover:text-white hover:bg-[#0a1636] border-transparent'
                   }`}
                 >
                   <ListOrdered className="w-4 h-4 text-amber-400" />
@@ -558,10 +559,10 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   id="nav-tab-requirements"
                   onClick={() => setActiveTab('requirements')}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition whitespace-nowrap border ${
                     activeTab === 'requirements'
-                      ? 'bg-amber-400 text-slate-950 shadow-sm'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                      ? 'bg-amber-400 text-slate-950 font-semibold border-amber-300'
+                      : 'text-slate-300 hover:text-white hover:bg-[#0a1636] border-transparent'
                   }`}
                 >
                   <FileText className="w-4 h-4 text-amber-400" />
@@ -576,23 +577,23 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   id="nav-tab-queue-list"
                   onClick={() => setActiveTab('queue-list')}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition whitespace-nowrap border ${
                     activeTab === 'queue-list'
-                      ? 'bg-amber-400 text-slate-950 shadow-sm'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                      ? 'bg-amber-400 text-slate-950 font-semibold border-amber-300'
+                      : 'text-slate-300 hover:text-white hover:bg-[#0a1636] border-transparent'
                   }`}
                 >
                   <ListOrdered className="w-4 h-4 text-amber-400" />
-                  <span>Lihat Nomor Antrian Berjalan</span>
+                  <span>Nomor Antrian Berjalan</span>
                 </button>
 
                 <button
                   id="nav-tab-requirements"
                   onClick={() => setActiveTab('requirements')}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition whitespace-nowrap border ${
                     activeTab === 'requirements'
-                      ? 'bg-amber-400 text-slate-950 shadow-sm'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                      ? 'bg-amber-400 text-slate-950 font-semibold border-amber-300'
+                      : 'text-slate-300 hover:text-white hover:bg-[#0a1636] border-transparent'
                   }`}
                 >
                   <FileText className="w-4 h-4 text-amber-400" />
@@ -602,10 +603,10 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   id="nav-tab-kiosk"
                   onClick={() => setActiveTab('kiosk')}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition whitespace-nowrap border ${
                     activeTab === 'kiosk'
-                      ? 'bg-amber-400 text-slate-950 shadow-sm'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                      ? 'bg-amber-400 text-slate-950 font-semibold border-amber-300'
+                      : 'text-slate-300 hover:text-white hover:bg-[#0a1636] border-transparent'
                   }`}
                 >
                   <Ticket className="w-4 h-4 text-amber-400" />
@@ -619,15 +620,15 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Kiosk Mode Notice Banner */}
       {userRole === 'kiosk' && (
-        <div className="bg-gradient-to-r from-amber-400/20 via-amber-400/30 to-amber-400/20 border-t border-amber-400/50 py-1.5 px-4 text-center">
-          <div className="flex items-center justify-between max-w-7xl mx-auto text-xs font-bold text-amber-300">
+        <div className="bg-[#0b1f48] border-t border-amber-400/40 py-2 px-4 text-center">
+          <div className="flex items-center justify-between max-w-7xl mx-auto text-xs text-amber-200">
             <span className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
-              <span>Layar Kiosk Mandiri Warga Aktif • Sentuh Layar Untuk Mengambil Tiket</span>
+              <Sparkles className="w-4 h-4 text-amber-400" />
+              <span className="font-medium">Layar Kiosk Mandiri Warga Aktif • Sentuh Layar Untuk Mengambil Tiket</span>
             </span>
             <button
               onClick={() => handleSelectRole('portal')}
-              className="text-[11px] bg-black/40 hover:bg-black/60 px-2.5 py-0.5 rounded border border-amber-400/40 text-amber-200"
+              className="text-[11px] bg-[#07132c] hover:bg-[#0e214d] px-3 py-1 rounded-md border border-amber-400/30 text-amber-300 font-medium transition"
             >
               Keluar Kiosk
             </button>
@@ -637,15 +638,15 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Display TV Mode Notice Banner */}
       {userRole === 'display' && (
-        <div className="bg-gradient-to-r from-blue-900/40 via-blue-800/40 to-blue-900/40 border-t border-blue-700/50 py-1.5 px-4 text-center">
-          <div className="flex items-center justify-between max-w-7xl mx-auto text-xs font-bold text-blue-200">
+        <div className="bg-[#0b1f48] border-t border-blue-800/80 py-2 px-4 text-center">
+          <div className="flex items-center justify-between max-w-7xl mx-auto text-xs text-slate-200">
             <span className="flex items-center gap-2">
-              <Tv className="w-4 h-4 text-amber-400" />
-              <span>Layar Monitor Display TV Ruang Tunggu Aktif</span>
+              <Tv className="w-4 h-4 text-sky-400" />
+              <span className="font-medium">Layar Monitor Display TV Ruang Tunggu Aktif</span>
             </span>
             <button
               onClick={() => handleSelectRole('portal')}
-              className="text-[11px] bg-black/40 hover:bg-black/60 px-2.5 py-0.5 rounded border border-blue-500/40 text-blue-200"
+              className="text-[11px] bg-[#07132c] hover:bg-[#0e214d] px-3 py-1 rounded-md border border-blue-700/50 text-slate-200 font-medium transition"
             >
               Keluar Mode TV
             </button>
@@ -655,18 +656,18 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* MODAL: VERIFIKASI PASSWORD PERAN UNTUK GANTI PERAN */}
       {showRolePasswordModal && pendingRole && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-xs p-4">
-          <div className="bg-[#0c1a38] border-2 border-amber-400 rounded-3xl p-6 sm:p-7 max-w-sm w-full text-white shadow-2xl animate-in fade-in">
-            <div className="flex items-center justify-between pb-3 border-b border-blue-900 mb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-xs p-4">
+          <div className="bg-[#0a1633] border border-blue-800 rounded-2xl p-6 max-w-sm w-full text-white shadow-2xl animate-in fade-in">
+            <div className="flex items-center justify-between pb-3 border-b border-blue-900/60 mb-4">
               <div className="flex items-center gap-2.5">
-                <div className={`p-2 rounded-xl text-slate-950 font-bold ${
+                <div className={`p-2 rounded-lg text-slate-950 font-bold ${
                   pendingRole === 'operator' ? 'bg-emerald-400' :
                   pendingRole === 'display' ? 'bg-sky-400' : 'bg-amber-400'
                 }`}>
-                  <Lock className="w-5 h-5" />
+                  <Lock className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-black text-base text-white">
+                  <h3 className="font-bold text-base text-white">
                     {pendingRole === 'admin'
                       ? 'Akses Administrator'
                       : pendingRole === 'operator'
@@ -683,7 +684,7 @@ export const Header: React.FC<HeaderProps> = ({
                   setRolePasswordInput('');
                   setRolePasswordError(false);
                 }}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800/80 transition"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -699,7 +700,7 @@ export const Header: React.FC<HeaderProps> = ({
 
             <form onSubmit={handleVerifyRolePassword} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                <label className="block text-xs font-medium text-slate-300 mb-1.5">
                   Masukkan Password Akses:
                 </label>
                 <div className="relative">
@@ -711,7 +712,7 @@ export const Header: React.FC<HeaderProps> = ({
                       setRolePasswordInput(e.target.value);
                       if (rolePasswordError) setRolePasswordError(false);
                     }}
-                    className={`w-full pl-4 pr-11 py-3 bg-[#060e20] border rounded-xl text-center text-lg font-mono tracking-wider text-white focus:outline-none focus:ring-2 ${
+                    className={`w-full pl-4 pr-11 py-2.5 bg-[#050d1e] border rounded-lg text-center text-base font-mono tracking-wider text-white focus:outline-none focus:ring-1 ${
                       rolePasswordError 
                         ? 'border-rose-500 focus:ring-rose-400' 
                         : 'border-blue-900 focus:ring-amber-400'
@@ -729,12 +730,12 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
 
                 {rolePasswordError ? (
-                  <p className="text-xs text-rose-400 font-bold mt-1.5 text-center">
+                  <p className="text-xs text-rose-400 font-medium mt-1.5 text-center">
                     Password tidak sesuai. Silakan coba lagi!
                   </p>
                 ) : (
                   <p className="text-[11px] text-slate-400 mt-1.5 text-center">
-                    Password Bawaan: <span className="font-mono text-amber-400 font-bold">
+                    Password Bawaan: <span className="font-mono text-amber-400 font-semibold">
                       {pendingRole === 'admin'
                         ? `${settings.adminPassword || 'admin123'} (atau PIN ${settings.adminPin || '1234'})`
                         : pendingRole === 'operator'
@@ -754,13 +755,13 @@ export const Header: React.FC<HeaderProps> = ({
                     setRolePasswordInput('');
                     setRolePasswordError(false);
                   }}
-                  className="flex-1 py-2.5 rounded-xl border border-blue-900 text-xs font-bold text-slate-300 hover:bg-[#07132c]"
+                  className="flex-1 py-2 rounded-lg border border-blue-900 text-xs font-medium text-slate-300 hover:bg-[#0e214d] transition"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black shadow-md shadow-amber-400/20 flex items-center justify-center gap-1.5"
+                  className="flex-1 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold transition flex items-center justify-center gap-1.5"
                 >
                   <KeyRound className="w-3.5 h-3.5 text-slate-950" />
                   <span>Verifikasi</span>
