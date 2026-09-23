@@ -19,7 +19,8 @@ import {
   ShieldCheck,
   Headphones,
   Tv,
-  Ticket
+  Ticket,
+  Download
 } from 'lucide-react';
 import { DEFAULT_SETTINGS } from '../data/servicesData';
 
@@ -350,6 +351,28 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 </p>
               </div>
             </div>
+          </div>
+
+          {/* Ekspor ke Komputer Lokal */}
+          <div className="bg-[#050d1e] p-3.5 rounded-xl border border-blue-900/80 flex items-center justify-between gap-3">
+            <div>
+              <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                <Download className="w-3.5 h-3.5 text-amber-400" />
+                <span>Ekspor Source Code ke Komputer Lokal</span>
+              </div>
+              <div className="text-[11px] text-slate-400 mt-0.5">
+                Unduh file .ZIP lengkap untuk dijalankan offline di server / laptop kantor Disdukcapil Keerom.
+              </div>
+            </div>
+            <a
+              id="settings-download-zip-btn"
+              href="/antrian-disdukcapil-keerom.zip"
+              download="antrian-disdukcapil-keerom.zip"
+              className="shrink-0 px-3.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-lg text-xs font-bold flex items-center gap-1.5 transition"
+            >
+              <Download className="w-3.5 h-3.5 text-slate-950" />
+              <span>Unduh ZIP</span>
+            </a>
           </div>
 
           {/* Action buttons */}

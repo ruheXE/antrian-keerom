@@ -4,16 +4,13 @@ import { SERVICES_DATA } from '../data/servicesData';
 import { 
   Maximize, 
   Minimize, 
-  Volume2, 
-  Sparkles, 
   Users, 
-  CheckCircle2, 
   Clock, 
   ShieldCheck, 
-  HelpCircle,
   Megaphone,
   MessageSquare,
-  ExternalLink
+  ExternalLink,
+  Volume2
 } from 'lucide-react';
 import { SingleCounterDisplayView } from './SingleCounterDisplayView';
 
@@ -76,27 +73,26 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
     window.open(url.toString(), `_blank_display_${counterId}`, 'width=1280,height=800');
   };
 
-  // Educational slides for citizens in waiting room
   const eduSlides = [
     {
       title: 'Perekaman KTP-el Warga Keerom',
-      desc: 'Bagi remaja yang telah berusia 17 tahun atau sudah menikah, segera lakukan perekaman KTP-el. Cukup membawa fotokopi Kartu Keluarga.',
-      tag: 'KTP-el Gratis'
+      desc: 'Bagi remaja berusia 17 tahun atau sudah menikah, silakan melakukan perekaman KTP-el dengan membawa fotokopi Kartu Keluarga.',
+      tag: 'KTP-el'
     },
     {
       title: 'Identitas Kependudukan Digital (IKD)',
-      desc: 'KTP digital kini ada di ponsel Anda! Aktifkan IKD sekarang di Loket 1 bersama petugas Disdukcapil Keerom.',
-      tag: 'Modern & Aman'
+      desc: 'Aktivasi KTP digital di ponsel pintar Anda sekarang di Loket 1 bersama petugas Disdukcapil Keerom.',
+      tag: 'IKD Digital'
     },
     {
       title: 'Dokumen Ber-Barcode (TTE) Bebas Legalisir',
-      desc: 'Sesuai Permendagri No. 104/2019, seluruh dokumen kependudukan yang sudah memiliki tanda tangan elektronik (QR code) tidak perlu lagi dilegalisir.',
-      tag: 'Info Resmi'
+      desc: 'Seluruh dokumen kependudukan yang telah bertanda tangan elektronik (QR Code) sah dan tidak perlu dilegalisir.',
+      tag: 'Regulasi TTE'
     },
     {
-      title: 'Layanan Adminduk 100% GRATIS',
-      desc: 'Seluruh pelayanan kependudukan dan pencatatan sipil di Kabupaten Keerom bebas pungutan biaya (GRATIS). Tolak dan laporkan segala bentuk pungli!',
-      tag: 'Bebas Pungli'
+      title: 'Seluruh Layanan Adminduk 100% Bebas Biaya',
+      desc: 'Pelayanan kependudukan dan pencatatan sipil di Kabupaten Keerom bebas pungutan biaya (Gratis). Tolak segala bentuk pungli!',
+      tag: 'Layanan Gratis'
     }
   ];
 
@@ -107,7 +103,6 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
     return () => clearInterval(slideTimer);
   }, [eduSlides.length]);
 
-  // If a specific counter is chosen, render the dedicated SingleCounterDisplayView
   if (activeScreen !== 'all') {
     return (
       <SingleCounterDisplayView
@@ -122,7 +117,6 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
     );
   }
 
-  // Current ticket displayed on main call card:
   const latestCalled = activeCallingTicket || 
     tickets.find(t => t.status === 'DIPANGGIL') ||
     tickets.find(t => t.status === 'SEDANG_DILAYANI') ||
@@ -135,25 +129,26 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
   const currentService = latestCalled ? SERVICES_DATA.find(s => s.id === latestCalled.serviceCategory) : null;
 
   return (
-    <div className="w-full min-h-[calc(100vh-130px)] bg-[#071126] text-slate-100 flex flex-col justify-between select-none">
-      {/* Top Banner Toolbar with Display Switcher */}
-      <div className="bg-[#0c1a38] border-b border-blue-900/60 px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
+    <div className="w-full min-h-[calc(100vh-64px)] bg-[#050b18] text-slate-100 flex flex-col justify-between select-none">
+      
+      {/* Top Display TV Toolbar */}
+      <div className="bg-[#081329] border-b border-blue-900/40 px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
         {/* Screen switcher */}
-        <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
-          <span className="text-[11px] font-black text-amber-400 uppercase tracking-wider mr-1 hidden lg:inline">
-            PILIH LAYAR:
+        <div className="flex items-center gap-1.5 overflow-x-auto py-1">
+          <span className="text-xs font-semibold text-slate-400 mr-2 hidden sm:inline">
+            Tampilan Layar:
           </span>
 
           <button
             id="display-select-all"
             onClick={() => handleSelectScreen('all')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap border ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition whitespace-nowrap ${
               activeScreen === 'all'
-                ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-md shadow-amber-400/20'
-                : 'bg-slate-900/70 hover:bg-slate-800 text-slate-300 border-slate-800'
+                ? 'bg-amber-400 text-slate-950 font-bold'
+                : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
             }`}
           >
-            <span>📺 Layar Utama (Semua)</span>
+            Monitor Utama (Semua Loket)
           </button>
 
           {counters.map(c => (
@@ -161,11 +156,11 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
               key={c.id}
               id={`display-select-counter-${c.id}`}
               onClick={() => handleSelectScreen(c.id)}
-              className="px-3 py-1.5 rounded-lg text-xs font-extrabold transition flex items-center gap-1.5 whitespace-nowrap bg-slate-900/70 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-amber-400/40"
+              className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition whitespace-nowrap flex items-center gap-1.5"
             >
               <span>{c.name}</span>
-              <span className="text-[10px] bg-slate-800 text-amber-300 px-1.5 py-0.2 rounded font-mono">
-                {c.serviceCode}
+              <span className="font-mono text-[10px] text-amber-400">
+                ({c.serviceCode})
               </span>
             </button>
           ))}
@@ -175,22 +170,22 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
           <button
             id="popout-master-display-btn"
             onClick={() => handleOpenPopout('all')}
-            title="Buka Layar Utama di Tab / Window Baru"
-            className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-950 hover:bg-blue-900 text-amber-300 border border-amber-400/30 transition shadow-xs"
+            title="Buka Layar Utama di Window Terpisah"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#0a1633] text-amber-300 hover:text-white border border-blue-900/60 transition"
           >
             <ExternalLink className="w-3.5 h-3.5 text-amber-400" />
-            <span className="hidden sm:inline">Buka Layar Terpisah ↗</span>
+            <span className="hidden sm:inline">Window Baru</span>
           </button>
 
           <button
             id="toggle-fullscreen-btn"
             onClick={toggleFullscreen}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#0a1633] text-slate-200 hover:text-white border border-blue-900/60 transition"
           >
             {isFullscreen ? (
               <>
                 <Minimize className="w-3.5 h-3.5 text-amber-400" />
-                <span>Normal</span>
+                <span>Keluar Layar Penuh</span>
               </>
             ) : (
               <>
@@ -202,43 +197,45 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
         </div>
       </div>
 
-      {/* Main TV Screen Content */}
+      {/* Main TV Screen Content Viewport */}
       <div className="p-4 sm:p-6 lg:p-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-[1600px] mx-auto w-full">
-        {/* Left Column (7 cols): Giant Call Spotlight Box */}
+        
+        {/* Left Column (7 cols): Dominant Focal Anchor - Current Ticket Spotlight */}
         <div className="lg:col-span-7 flex flex-col justify-between gap-5">
-          {/* Main Calling Spotlight */}
-          <div className={`relative rounded-2xl p-6 sm:p-7 border transition-all duration-300 shadow-md flex flex-col justify-between min-h-[380px] sm:min-h-[420px] overflow-hidden ${
+          
+          <div className={`relative rounded-3xl p-6 sm:p-8 border transition-all duration-300 shadow-xl flex flex-col justify-between min-h-[400px] sm:min-h-[460px] overflow-hidden ${
             activeCallingTicket
-              ? 'bg-[#0e214d] border-amber-400 shadow-amber-400/10'
-              : 'bg-[#0a1633] border-blue-900/80'
+              ? 'bg-[#0a183d] border-amber-400 ring-2 ring-amber-400/40'
+              : 'bg-[#091530] border-blue-900/60'
           }`}>
-            {/* Header Badge */}
-            <div className="flex items-center justify-between border-b border-blue-900/70 pb-3.5 relative z-10">
-              <div className="flex items-center gap-2.5">
-                <div className={`px-3.5 py-1 rounded-md text-xs sm:text-sm font-bold tracking-wider uppercase flex items-center gap-1.5 ${
-                  latestCalled?.status === 'DIPANGGIL'
-                    ? 'bg-amber-400 text-slate-950 font-black'
-                    : 'bg-[#050d1e] text-amber-300 border border-amber-400/40'
-                }`}>
-                  <Megaphone className="w-4 h-4" />
-                  <span>
-                    {latestCalled?.status === 'DIPANGGIL'
-                      ? 'SEDANG DIPANGGIL SAAT INI'
-                      : latestCalled?.status === 'SEDANG_DILAYANI'
-                      ? 'SEDANG DILAYANI DI LOKET'
-                      : 'PANGGILAN LOKET TERAKHIR'}
-                  </span>
+            
+            {/* Header: Call Status Bar */}
+            <div className="flex items-center justify-between border-b border-blue-900/50 pb-4 relative z-10">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 text-xs sm:text-sm font-bold tracking-wide uppercase">
+                  {latestCalled?.status === 'DIPANGGIL' ? (
+                    <div className="flex items-center gap-2 text-amber-400">
+                      <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
+                      <span>Sedang Dipanggil</span>
+                    </div>
+                  ) : latestCalled?.status === 'SEDANG_DILAYANI' ? (
+                    <div className="flex items-center gap-2 text-emerald-400">
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                      <span>Sedang Dilayani</span>
+                    </div>
+                  ) : (
+                    <span className="text-slate-400">Panggilan Terakhir</span>
+                  )}
                 </div>
 
                 {latestCalled?.queueType === 'PRIORITAS' && (
-                  <span className="flex items-center gap-1 text-xs font-bold bg-[#0b1f48] text-amber-300 px-2.5 py-1 rounded-md border border-amber-400/40">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                    Jalur Prioritas
+                  <span className="text-xs font-semibold text-amber-300">
+                    · Jalur Prioritas
                   </span>
                 )}
               </div>
 
-              <div className="text-xs font-mono text-slate-300">
+              <div className="text-xs font-mono text-slate-400 tabular-nums">
                 {latestCalled?.calledAt ? (
                   <span>Pukul {new Date(latestCalled.calledAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIT</span>
                 ) : (
@@ -247,29 +244,29 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
               </div>
             </div>
 
-            {/* Center: Massive Number Display */}
-            <div className="py-6 sm:py-8 text-center relative z-10">
-              <div className="text-xs uppercase tracking-widest text-amber-400 font-bold mb-1">
-                NOMOR ANTRIAN
+            {/* Center: Massive Number Display with Tabular Figures */}
+            <div className="py-8 sm:py-12 text-center relative z-10">
+              <div className="text-xs uppercase tracking-widest text-slate-400 font-medium mb-2">
+                Nomor Antrian
               </div>
               
-              <div className={`font-mono text-6xl sm:text-8xl md:text-9xl font-black tracking-tight leading-none my-2 transition-transform ${
-                activeCallingTicket ? 'text-amber-400 scale-102' : 'text-amber-300'
+              <div className={`font-mono text-7xl sm:text-8xl md:text-9xl font-black tracking-tight leading-none my-2 tabular-nums transition-transform ${
+                activeCallingTicket ? 'text-amber-400 scale-105' : 'text-amber-300'
               }`}>
                 {latestCalled ? latestCalled.ticketNumber : '--'}
               </div>
 
               {latestCalled?.citizenName && (
-                <div className="mt-3 text-base sm:text-xl font-bold text-white flex flex-wrap items-center justify-center gap-2">
+                <div className="mt-4 text-base sm:text-xl font-bold text-white flex flex-wrap items-center justify-center gap-3">
                   <span>{latestCalled.citizenName}</span>
                   {latestCalled.citizenDistrict && (
-                    <span className="text-xs font-semibold text-amber-300 bg-[#050d1e] px-2.5 py-0.5 rounded-md border border-amber-400/30">
-                      Distrik {latestCalled.citizenDistrict}
+                    <span className="text-xs text-slate-400 font-normal">
+                      · Distrik {latestCalled.citizenDistrict}
                     </span>
                   )}
                   {latestCalled.smsSent && (
-                    <span className="text-[11px] font-semibold text-emerald-300 bg-emerald-950/80 px-2 py-0.5 rounded-md border border-emerald-500/30 flex items-center gap-1">
-                      <MessageSquare className="w-3 h-3 text-emerald-400" />
+                    <span className="text-xs text-emerald-400 font-medium flex items-center gap-1">
+                      <MessageSquare className="w-3.5 h-3.5" />
                       SMS Terkirim
                     </span>
                   )}
@@ -278,41 +275,40 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
             </div>
 
             {/* Footer Destination Box: Menuju ke Loket */}
-            <div className="bg-[#050d1e] rounded-xl p-4 border border-blue-900/70 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="bg-[#050e24] rounded-2xl p-5 border border-blue-900/60 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="text-center sm:text-left">
-                <div className="text-[11px] uppercase text-slate-400 tracking-wider font-semibold">SILAKAN MENUJU KE</div>
-                <div className="text-xl sm:text-3xl font-black text-amber-400 tracking-tight mt-0.5 flex items-center gap-2">
-                  <span>{targetCounter ? targetCounter.name : 'Loket Pelayanan'}</span>
+                <div className="text-[11px] uppercase text-slate-400 font-medium">Silakan Menuju Ke</div>
+                <div className="text-2xl sm:text-3xl font-black text-amber-400 tracking-tight mt-0.5">
+                  {targetCounter ? targetCounter.name : 'Loket Pelayanan'}
                 </div>
               </div>
 
               <div className="text-center sm:text-right">
-                <div className="text-[11px] uppercase text-slate-400 tracking-wider font-semibold">JENIS PELAYANAN</div>
-                <div className="text-xs sm:text-sm font-bold text-slate-100 mt-0.5">
+                <div className="text-[11px] uppercase text-slate-400 font-medium">Pelayanan</div>
+                <div className="text-sm font-semibold text-slate-100 mt-0.5">
                   {currentService ? currentService.name : 'Administrasi Kependudukan'}
                 </div>
                 {targetCounter?.officerName && (
-                  <div className="text-[11px] text-slate-400 mt-0.5">
-                    Petugas: <span className="text-slate-200 font-semibold">{targetCounter.officerName}</span>
+                  <div className="text-xs text-slate-400 mt-0.5">
+                    Petugas: <span className="text-slate-200">{targetCounter.officerName}</span>
                   </div>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Education / Info Slideshow Banner */}
-          <div className="bg-[#0a1633] rounded-xl p-4 border border-blue-900/70 flex items-start gap-3.5 shadow-sm">
-            <div className="p-2 rounded-lg bg-[#0e214d] border border-amber-400/30 text-amber-400 shrink-0">
+          {/* Citizen Educational Slide Banner */}
+          <div className="bg-[#091530] rounded-2xl p-4 sm:p-5 border border-blue-900/50 flex items-start gap-4">
+            <div className="p-2.5 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/20 shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                  {eduSlides[tickerIndex].tag}
-                </span>
-                <span className="text-[10px] text-slate-400">• Disdukcapil Kab. Keerom</span>
+              <div className="flex items-center gap-2 text-xs text-amber-400 font-semibold">
+                <span>{eduSlides[tickerIndex].tag}</span>
+                <span aria-hidden="true" className="text-slate-600">·</span>
+                <span className="text-slate-400 font-normal">Informasi Disdukcapil Keerom</span>
               </div>
-              <h4 className="text-xs sm:text-sm font-bold text-white mt-0.5">
+              <h4 className="text-sm font-bold text-white mt-0.5">
                 {eduSlides[tickerIndex].title}
               </h4>
               <p className="text-xs text-slate-300 mt-1 leading-relaxed">
@@ -320,16 +316,17 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
               </p>
             </div>
           </div>
+
         </div>
 
-        {/* Right Column (5 cols): Live Grid of Counters 1 to 5 */}
-        <div className="lg:col-span-5 flex flex-col gap-3.5">
+        {/* Right Column (5 cols): Live Matrix of Counters 1 to 5 */}
+        <div className="lg:col-span-5 flex flex-col gap-3">
           <div className="flex items-center justify-between pb-1">
-            <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
               <Users className="w-4 h-4 text-amber-400" />
-              STATUS SEMUA LOKET PELAYANAN
+              Status Loket Pelayanan
             </h3>
-            <span className="text-xs text-amber-400 font-mono font-semibold">
+            <span className="text-xs text-amber-400 font-mono tabular-nums">
               {counters.filter(c => c.isOpen).length} dari {counters.length} Loket Buka
             </span>
           </div>
@@ -342,7 +339,6 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
               const isThisCalling = activeCallingTicket?.id === currentTicket?.id;
               const service = SERVICES_DATA.find(s => s.code === counter.serviceCode);
 
-              // Waiting count for this service
               const waitingCount = tickets.filter(
                 t => t.serviceCode === counter.serviceCode && t.status === 'MENUNGGU'
               ).length;
@@ -351,20 +347,20 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
                 <div
                   key={counter.id}
                   onClick={() => handleSelectScreen(counter.id)}
-                  className={`rounded-xl p-3.5 border transition-all cursor-pointer ${
+                  className={`rounded-2xl p-4 border transition-all cursor-pointer ${
                     isThisCalling
-                      ? 'bg-[#0e214d] border-amber-400 shadow-sm'
+                      ? 'bg-[#0d1e44] border-amber-400 shadow-md ring-1 ring-amber-400/30'
                       : isCalling
-                      ? 'bg-[#0c1c3f] border-amber-400/60'
+                      ? 'bg-[#0a1838] border-amber-400/60'
                       : isServing
-                      ? 'bg-[#0a1633] border-blue-800'
-                      : 'bg-[#071126] border-blue-900/60 opacity-85'
-                  } hover:border-amber-400/60`}
+                      ? 'bg-[#091530] border-blue-900/60'
+                      : 'bg-[#060e20] border-blue-900/40 opacity-80'
+                  } hover:border-amber-400/50`}
                   title="Klik untuk membuka layar khusus loket ini"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className={`w-9 h-9 rounded-lg font-bold flex items-center justify-center text-sm ${
+                    <div className="flex items-center gap-3">
+                      <div className={`w-9 h-9 rounded-xl font-bold font-mono flex items-center justify-center text-sm ${
                         counter.isOpen
                           ? 'bg-amber-400 text-slate-950'
                           : 'bg-slate-800 text-slate-400'
@@ -374,52 +370,42 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
 
                       <div>
                         <div className="flex items-center gap-2">
-                          <h4 className="font-bold text-white text-sm sm:text-base">
+                          <h4 className="font-bold text-white text-sm">
                             {counter.name}
                           </h4>
-                          {counter.isOpen ? (
-                            <span className="text-[10px] bg-emerald-500/10 text-emerald-300 px-1.5 py-0.2 rounded font-semibold border border-emerald-500/30">
-                              BUKA
-                            </span>
-                          ) : (
-                            <span className="text-[10px] bg-rose-500/10 text-rose-300 px-1.5 py-0.2 rounded font-semibold border border-rose-500/30">
-                              TUTUP
-                            </span>
-                          )}
+                          <span className={`text-[10px] font-semibold ${counter.isOpen ? 'text-emerald-400' : 'text-slate-500'}`}>
+                            · {counter.isOpen ? 'Buka' : 'Tutup'}
+                          </span>
                         </div>
-                        <p className="text-xs text-slate-300 font-normal truncate max-w-[200px]">
+                        <p className="text-xs text-slate-400 truncate max-w-[200px]">
                           {service?.name || counter.name}
                         </p>
                       </div>
                     </div>
 
-                    {/* Current Number in Counter */}
                     <div className="text-right">
-                      <div className="text-[10px] uppercase font-semibold tracking-wider text-slate-400">
-                        {isCalling ? 'DIPANGGIL' : isServing ? 'DILAYANI' : 'STATUS'}
+                      <div className="text-[10px] uppercase font-medium text-slate-400">
+                        {isCalling ? 'Dipanggil' : isServing ? 'Melayani' : 'Status'}
                       </div>
-                      <div className={`font-mono text-xl sm:text-2xl font-bold ${
+                      <div className={`font-mono text-2xl font-bold tabular-nums ${
                         isCalling
                           ? 'text-amber-400'
                           : isServing
                           ? 'text-yellow-300'
-                          : 'text-slate-500'
+                          : 'text-slate-600'
                       }`}>
                         {currentTicket ? currentTicket.ticketNumber : '- -'}
                       </div>
                     </div>
                   </div>
 
-                  {/* Sub details: Officer and Waiting queue */}
-                  <div className="mt-2.5 pt-2 border-t border-blue-900/60 flex items-center justify-between text-xs text-slate-300">
-                    <div className="truncate max-w-[220px]">
-                      Petugas: <span className="text-slate-200 font-medium">{counter.officerName}</span>
+                  <div className="mt-3 pt-2.5 border-t border-blue-900/40 flex items-center justify-between text-xs text-slate-400">
+                    <div className="truncate max-w-[200px]">
+                      Petugas: <span className="text-slate-200">{counter.officerName}</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-slate-400">Antrian:</span>
-                      <span className={`font-semibold px-1.5 py-0.2 rounded text-[11px] ${
-                        waitingCount > 0 ? 'bg-amber-400 text-slate-950' : 'bg-slate-800 text-slate-400'
-                      }`}>
+                    <div className="flex items-center gap-1">
+                      <span>Antrian:</span>
+                      <span className="font-mono font-bold text-amber-400 tabular-nums">
                         {waitingCount}
                       </span>
                     </div>
@@ -430,8 +416,8 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
           </div>
 
           {/* Quick Call Log Ticker */}
-          <div className="bg-[#0a1633] rounded-xl p-3 border border-blue-900/70 text-xs">
-            <div className="text-[11px] font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+          <div className="bg-[#091530] rounded-2xl p-3.5 border border-blue-900/50 text-xs">
+            <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-amber-400" />
               Riwayat Panggilan Terakhir:
             </div>
@@ -439,42 +425,44 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
               {callLogs.slice(0, 4).map((log) => (
                 <span
                   key={log.id}
-                  className="bg-[#050d1e] px-2 py-0.5 rounded-md text-[11px] font-mono text-slate-200 border border-blue-900 flex items-center gap-1"
+                  className="bg-[#050e24] px-2.5 py-1 rounded-lg text-xs font-mono text-slate-200 border border-blue-900/50 flex items-center gap-1.5"
                 >
-                  <span className="font-bold text-amber-400">{log.ticketNumber}</span>
-                  <span className="text-slate-500">→</span>
+                  <span className="font-bold text-amber-400 tabular-nums">{log.ticketNumber}</span>
+                  <span className="text-slate-600">→</span>
                   <span>{log.counterName}</span>
                 </span>
               ))}
               {callLogs.length === 0 && (
-                <span className="text-slate-500 italic">Belum ada riwayat panggilan</span>
+                <span className="text-slate-500 italic text-xs">Belum ada panggilan antrian</span>
               )}
             </div>
           </div>
         </div>
+
       </div>
 
-      {/* Bottom Running Text Marquee in Navy & Yellow */}
-      <div className="bg-[#060e20] border-t-2 border-amber-400 px-4 py-2 text-amber-200 overflow-hidden flex items-center justify-between relative shadow-lg">
+      {/* Bottom Running Text Marquee */}
+      <div className="bg-[#060e20] border-t border-amber-400/80 px-4 py-2 text-slate-200 overflow-hidden flex items-center justify-between relative shadow-lg">
         <div className="flex items-center overflow-hidden flex-1 mr-4">
-          <div className="bg-amber-400 text-slate-950 font-black text-[11px] px-3 py-1 rounded-md mr-3 uppercase tracking-wider shrink-0 flex items-center gap-1.5 shadow-md">
+          <div className="bg-amber-400 text-slate-950 font-bold text-xs px-3 py-1 rounded-lg mr-3 shrink-0 flex items-center gap-1.5">
             <Megaphone className="w-3.5 h-3.5 text-slate-950" />
-            <span>Warta Dukcapil Keerom</span>
+            <span>Pengumuman</span>
           </div>
 
           <div className="marquee-container flex-1 overflow-hidden whitespace-nowrap">
-            <div className="inline-block animate-marquee font-bold text-xs sm:text-sm tracking-wide text-amber-100">
+            <div className="inline-block animate-marquee font-medium text-xs sm:text-sm text-slate-200">
               {settings.runningText}
             </div>
           </div>
         </div>
 
-        <div className="hidden lg:flex items-center gap-1.5 text-[11px] text-slate-400 shrink-0 font-medium pl-3 border-l border-blue-900/80">
-          <span>Aplikasi:</span>
-          <span className="text-amber-400 font-bold">heraX</span>
-          <span className="text-emerald-400 font-mono font-bold">(082189585776)</span>
+        <div className="hidden lg:flex items-center gap-2 text-xs text-slate-400 shrink-0 pl-4 border-l border-blue-900/60 font-mono">
+          <span>Disdukcapil Keerom</span>
+          <span>·</span>
+          <span className="text-amber-400">100% Bebas Pungli</span>
         </div>
       </div>
+
     </div>
   );
 };

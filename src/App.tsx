@@ -630,38 +630,36 @@ export default function App() {
         )}
       </main>
 
-      {/* Global Application Footer with Developer Credit */}
+      {/* Global Application Footer */}
       {activeTab !== 'display' && (
-        <footer className="w-full bg-[#050b18] border-t border-blue-900/60 py-4 px-4 sm:px-6 text-slate-400 text-xs mt-auto">
-          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-            <div className="flex items-center gap-2.5">
+        <footer className="w-full bg-[#050b18] border-t border-blue-900/40 py-6 px-4 sm:px-6 text-slate-400 text-xs mt-auto">
+          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div className="flex items-center gap-3">
               <KeeromLogo size="sm" />
               <div>
-                <div className="font-bold text-slate-200">
+                <div className="font-semibold text-slate-200 text-xs sm:text-sm">
                   Dinas Kependudukan dan Pencatatan Sipil Kabupaten Keerom
                 </div>
-                <div className="text-[11px] text-slate-400">
-                  Pelayanan Adminduk Terpadu • Semboyan:{' '}
-                  <span className="text-amber-400 font-semibold">"Tamne Yisan Kefase"</span> (Bersatu Untuk Membangun)
+                <div className="text-[11px] text-slate-400 mt-0.5">
+                  Provinsi Papua · Semboyan: <span className="text-amber-400 font-medium">"Tamne Yisan Kefase"</span> (Bersatu Membangun)
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-col sm:items-end text-xs">
-              <div className="flex items-center gap-1.5 font-medium text-slate-300">
-                <span>Pengembang Aplikasi:</span>
-                <span className="font-bold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/30">
-                  heraX
-                </span>
+            <div className="flex flex-col sm:items-end text-xs text-slate-400">
+              <div className="flex items-center gap-2 font-medium">
+                <span>Pengembang:</span>
+                <span className="font-semibold text-amber-400">heraX</span>
+                <span aria-hidden="true" className="text-slate-600">·</span>
                 <a
                   href="tel:082189585776"
-                  className="text-emerald-400 hover:text-emerald-300 font-mono font-bold hover:underline"
+                  className="text-emerald-400 hover:text-emerald-300 font-mono tabular-nums transition-colors"
                 >
-                  (082189585776)
+                  082189585776
                 </a>
               </div>
-              <div className="text-[10px] text-slate-400 mt-0.5">
-                Sistem Antrian Loket Elektronik & Panggilan Suara Terintegrasi
+              <div className="text-[11px] text-slate-400 mt-0.5">
+                Sistem Informasi & Manajemen Antrian Adminduk Terpadu
               </div>
             </div>
           </div>

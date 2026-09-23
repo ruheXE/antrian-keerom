@@ -23,7 +23,12 @@ import {
   MessageSquare,
   Building,
   UserCheck,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Download,
+  FileCode,
+  Archive,
+  Database,
+  Check
 } from 'lucide-react';
 import { KeeromLogo } from './KeeromLogo';
 import { 
@@ -34,6 +39,12 @@ import {
   restoreSampleQueueData 
 } from '../services/storageService';
 import { loadSmsLogs } from '../services/smsService';
+import { 
+  exportArchiveAsJson, 
+  exportTicketsAsCsv, 
+  exportCallLogsAsCsv, 
+  exportStatisticsSummaryAsCsv 
+} from '../services/exportService';
 
 interface AdminPanelViewProps {
   tickets: Ticket[];
@@ -61,6 +72,8 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
   const [editingTicket, setEditingTicket] = useState<Ticket | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditCounterModal, setShowEditCounterModal] = useState<CounterInfo | null>(null);
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [exportSuccessMsg, setExportSuccessMsg] = useState<string | null>(null);
 
   // New ticket form
   const [newTicketService, setNewTicketService] = useState<'A' | 'B' | 'C' | 'D' | 'E'>('A');
@@ -186,17 +199,49 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
     window.print();
   };
 
+  // Handle Export / Download
+  const triggerExport = (type: 'json' | 'csv_tickets' | 'csv_calls' | 'csv_stats') => {
+    try {
+      if (type === 'json') {
+        exportArchiveAsJson(tickets, counters, settings, smsLogs);
+        setExportSuccessMsg('Arsip data lengkap (.JSON) berhasil diunduh untuk arsip lokal.');
+      } else if (type === 'csv_tickets') {
+        exportTicketsAsCsv(tickets, counters);
+        setExportSuccessMsg('Data antrian lengkap (.CSV) berhasil diunduh untuk Excel / spreadsheet.');
+      } else if (type === 'csv_calls') {
+        exportCallLogsAsCsv(tickets, counters, smsLogs);
+        setExportSuccessMsg('Log pemanggilan loket & SMS (.CSV) berhasil diunduh.');
+      } else if (type === 'csv_stats') {
+        exportStatisticsSummaryAsCsv(tickets, counters);
+        setExportSuccessMsg('Rekapitulasi statistik pelayanan (.CSV) berhasil diunduh.');
+      }
+      setTimeout(() => {
+        setExportSuccessMsg(null);
+      }, 4000);
+    } catch (err) {
+      console.error('Export error:', err);
+    }
+  };
+
   return (
     <div className="w-full min-h-[calc(100vh-130px)] bg-[#071126] text-slate-100 p-4 sm:p-6 lg:p-8">
+      {/* Toast Notification */}
+      {exportSuccessMsg && (
+        <div className="fixed top-20 right-6 z-50 bg-emerald-500 text-slate-950 px-4 py-3 rounded-2xl font-bold shadow-2xl flex items-center gap-2 border border-emerald-300 animate-in fade-in slide-in-from-top-4">
+          <Check className="w-5 h-5 text-slate-950" />
+          <span className="text-xs">{exportSuccessMsg}</span>
+        </div>
+      )}
+
       {/* Header Banner - Navy & Yellow Theme */}
       <div className="max-w-7xl mx-auto bg-gradient-to-r from-[#0c1a38] via-[#102452] to-[#0c1a38] border-2 border-amber-400/50 rounded-3xl p-5 sm:p-7 shadow-2xl mb-8">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-lg shadow-amber-400/20">
+            <div className="w-14 h-14 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-lg shadow-amber-400/20 shrink-0">
               <ShieldCheck className="w-8 h-8" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-xs uppercase font-extrabold tracking-widest text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-md border border-amber-400/30">
                   HAK AKSES ADMINISTRATOR
                 </span>
@@ -206,51 +251,64 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
                 PUSAT KONTROL & MANAJEMEN ADMIN
               </h1>
               <p className="text-xs sm:text-sm text-slate-300">
-                Memantau antrian live, memodifikasi data tiket & loket, serta mencetak laporan resmi Disdukcapil.
+                Memantau antrian live, memodifikasi data tiket & loket, serta mencetak & mengekspor laporan resmi Disdukcapil.
               </p>
             </div>
           </div>
 
-          {/* Sub-tab switcher */}
-          <div className="flex items-center gap-1.5 bg-[#060e20] p-1.5 rounded-2xl border border-blue-900/80 w-full md:w-auto overflow-x-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full lg:w-auto">
+            {/* Quick Export Master Button */}
             <button
-              id="admin-subtab-monitor"
-              onClick={() => setActiveSubTab('monitor')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition whitespace-nowrap ${
-                activeSubTab === 'monitor'
-                  ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-              }`}
+              id="admin-quick-export-modal-btn"
+              onClick={() => setShowExportModal(true)}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black bg-blue-950 hover:bg-blue-900 text-amber-300 border border-amber-400/50 transition shadow-lg shrink-0"
+              title="Ekspor seluruh data antrian, log, dan statistik ke file JSON / CSV"
             >
-              <BarChart3 className="w-4 h-4" />
-              <span>1. Memantau Live</span>
+              <Download className="w-4 h-4 text-amber-400" />
+              <span>Ekspor & Arsip Data</span>
             </button>
 
-            <button
-              id="admin-subtab-manage"
-              onClick={() => setActiveSubTab('manage')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition whitespace-nowrap ${
-                activeSubTab === 'manage'
-                  ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-              }`}
-            >
-              <Edit3 className="w-4 h-4" />
-              <span>2. Ubah Data & Loket</span>
-            </button>
+            {/* Sub-tab switcher */}
+            <div className="flex items-center gap-1 bg-[#060e20] p-1.5 rounded-2xl border border-blue-900/80 w-full sm:w-auto overflow-x-auto">
+              <button
+                id="admin-subtab-monitor"
+                onClick={() => setActiveSubTab('monitor')}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-black transition whitespace-nowrap ${
+                  activeSubTab === 'monitor'
+                    ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                }`}
+              >
+                <BarChart3 className="w-4 h-4" />
+                <span>1. Memantau Live</span>
+              </button>
 
-            <button
-              id="admin-subtab-report"
-              onClick={() => setActiveSubTab('report')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition whitespace-nowrap ${
-                activeSubTab === 'report'
-                  ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-              }`}
-            >
-              <Printer className="w-4 h-4" />
-              <span>3. Printout Laporan</span>
-            </button>
+              <button
+                id="admin-subtab-manage"
+                onClick={() => setActiveSubTab('manage')}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-black transition whitespace-nowrap ${
+                  activeSubTab === 'manage'
+                    ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                }`}
+              >
+                <Edit3 className="w-4 h-4" />
+                <span>2. Ubah Data</span>
+              </button>
+
+              <button
+                id="admin-subtab-report"
+                onClick={() => setActiveSubTab('report')}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-black transition whitespace-nowrap ${
+                  activeSubTab === 'report'
+                    ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                }`}
+              >
+                <Printer className="w-4 h-4" />
+                <span>3. Laporan & Ekspor</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -468,6 +526,145 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
                 </p>
               )}
             </div>
+
+            {/* EKSPOR & ARSIP DATA PELAYANAN LOKAL (JSON & CSV) */}
+            <div className="bg-gradient-to-br from-[#0c1a38] via-[#0e214d] to-[#0a1736] rounded-3xl p-6 border-2 border-amber-400/40 shadow-2xl">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-blue-900/80 pb-4 mb-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/30 flex items-center justify-center font-black shrink-0">
+                    <Database className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-base font-black text-white">
+                        EKSPOR & ARSIP DATA PELAYANAN LOKAL
+                      </h3>
+                      <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded border border-emerald-500/40">
+                        OFFLINE ARCHIVE READY
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-300 mt-0.5">
+                      Simpan seluruh data tiket antrian, riwayat panggilan loket, notifikasi SMS, dan statistik ke file lokal (JSON / CSV).
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => triggerExport('json')}
+                  className="px-4 py-2 bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-slate-950 font-black rounded-xl text-xs flex items-center gap-2 shadow-md shadow-amber-400/20 transition shrink-0"
+                >
+                  <Archive className="w-4 h-4" />
+                  <span>Unduh Master Backup (.JSON)</span>
+                </button>
+              </div>
+
+              {/* 4 Format Export Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* 1. JSON Master Archive */}
+                <div className="bg-[#060e20] p-4 rounded-2xl border border-blue-900/80 flex flex-col justify-between hover:border-amber-400/50 transition">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="w-8 h-8 rounded-lg bg-amber-400/20 text-amber-400 flex items-center justify-center font-bold text-xs border border-amber-400/30">
+                        <FileCode className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] text-amber-300 font-mono bg-blue-950 px-2 py-0.5 rounded border border-blue-900">
+                        .JSON
+                      </span>
+                    </div>
+                    <h4 className="font-bold text-white text-xs">Arsip Master Lengkap</h4>
+                    <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                      Seluruh dataset terstruktur: metadata dinas, {tickets.length} tiket, loket, log panggilan, SMS, dan statistik.
+                    </p>
+                  </div>
+                  <button
+                    id="export-btn-json-full"
+                    onClick={() => triggerExport('json')}
+                    className="mt-4 w-full py-2 bg-blue-950 hover:bg-amber-400 hover:text-slate-950 text-amber-300 font-bold rounded-xl text-xs border border-amber-400/40 flex items-center justify-center gap-1.5 transition"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Unduh JSON</span>
+                  </button>
+                </div>
+
+                {/* 2. CSV Data Antrian */}
+                <div className="bg-[#060e20] p-4 rounded-2xl border border-blue-900/80 flex flex-col justify-between hover:border-emerald-400/50 transition">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs border border-emerald-500/30">
+                        <FileSpreadsheet className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] text-emerald-300 font-mono bg-blue-950 px-2 py-0.5 rounded border border-blue-900">
+                        .CSV (Excel)
+                      </span>
+                    </div>
+                    <h4 className="font-bold text-white text-xs">Data Antrian Lengkap</h4>
+                    <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                      Daftar pemohon, NIK, No HP, asal distrik, jalur, status, durasi menit pelayanan, dan catatan petugas loket.
+                    </p>
+                  </div>
+                  <button
+                    id="export-btn-csv-tickets"
+                    onClick={() => triggerExport('csv_tickets')}
+                    className="mt-4 w-full py-2 bg-emerald-950 hover:bg-emerald-500 hover:text-slate-950 text-emerald-300 font-bold rounded-xl text-xs border border-emerald-500/40 flex items-center justify-center gap-1.5 transition"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Unduh CSV Antrian</span>
+                  </button>
+                </div>
+
+                {/* 3. CSV Log Panggilan & SMS */}
+                <div className="bg-[#060e20] p-4 rounded-2xl border border-blue-900/80 flex flex-col justify-between hover:border-blue-400/50 transition">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs border border-blue-500/30">
+                        <Phone className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] text-blue-300 font-mono bg-blue-950 px-2 py-0.5 rounded border border-blue-900">
+                        .CSV (Excel)
+                      </span>
+                    </div>
+                    <h4 className="font-bold text-white text-xs">Log Panggilan & SMS</h4>
+                    <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                      Catatan timestamp audit pemanggilan loket, frekuensi panggil ulang, dan rekap log SMS notifikasi.
+                    </p>
+                  </div>
+                  <button
+                    id="export-btn-csv-calls"
+                    onClick={() => triggerExport('csv_calls')}
+                    className="mt-4 w-full py-2 bg-blue-950 hover:bg-blue-500 hover:text-white text-blue-300 font-bold rounded-xl text-xs border border-blue-500/40 flex items-center justify-center gap-1.5 transition"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Unduh Log Panggilan</span>
+                  </button>
+                </div>
+
+                {/* 4. CSV Rekapitulasi Statistik */}
+                <div className="bg-[#060e20] p-4 rounded-2xl border border-blue-900/80 flex flex-col justify-between hover:border-purple-400/50 transition">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs border border-purple-500/30">
+                        <BarChart3 className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] text-purple-300 font-mono bg-blue-950 px-2 py-0.5 rounded border border-blue-900">
+                        .CSV (Excel)
+                      </span>
+                    </div>
+                    <h4 className="font-bold text-white text-xs">Rekap Statistik Layanan</h4>
+                    <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                      Ringkasan KPI, total berkas per jenis loket & layanan, serta persentase distribusi asal distrik pemohon.
+                    </p>
+                  </div>
+                  <button
+                    id="export-btn-csv-stats"
+                    onClick={() => triggerExport('csv_stats')}
+                    className="mt-4 w-full py-2 bg-purple-950 hover:bg-purple-500 hover:text-white text-purple-300 font-bold rounded-xl text-xs border border-purple-500/40 flex items-center justify-center gap-1.5 transition"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Unduh Rekap Statistik</span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
@@ -523,6 +720,16 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
 
               {/* Action buttons */}
               <div className="flex items-center gap-2">
+                <button
+                  id="admin-export-csv-direct-btn"
+                  onClick={() => triggerExport('csv_tickets')}
+                  className="px-3 py-2 bg-emerald-950 hover:bg-emerald-900 text-emerald-300 border border-emerald-500/40 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+                  title="Unduh data antrian ke CSV Excel"
+                >
+                  <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="hidden md:inline">Ekspor CSV</span>
+                </button>
+
                 <button
                   id="admin-create-ticket-btn"
                   onClick={() => setShowCreateModal(true)}
@@ -791,21 +998,51 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
               <div>
                 <h3 className="font-black text-white text-base flex items-center gap-2">
                   <Printer className="w-5 h-5 text-amber-400" />
-                  PRINTOUT LAPORAN RESMI ADMINDUK KABUPATEN KEEROM
+                  LAPORAN RESMI & ARSIP DIGITAL DISDUKCAPIL KEEROM
                 </h3>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  Format cetak resmi berkop dinas untuk arsip, laporan harian pimpinan, dan pertanggungjawaban.
+                  Cetak dokumen berkop resmi (PDF/Kertas) atau unduh arsip data elektronik (JSON / CSV).
                 </p>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <button
+                  id="admin-export-json-report-btn"
+                  onClick={() => triggerExport('json')}
+                  className="px-3 py-2 bg-blue-950 hover:bg-blue-900 text-amber-300 border border-amber-400/40 rounded-xl text-xs font-bold flex items-center gap-1.5 transition"
+                  title="Unduh seluruh arsip data sistem (.JSON)"
+                >
+                  <FileCode className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Arsip JSON</span>
+                </button>
+
+                <button
+                  id="admin-export-csv-report-btn"
+                  onClick={() => triggerExport('csv_tickets')}
+                  className="px-3 py-2 bg-emerald-950 hover:bg-emerald-900 text-emerald-300 border border-emerald-500/40 rounded-xl text-xs font-bold flex items-center gap-1.5 transition"
+                  title="Unduh data antrian tabular (.CSV)"
+                >
+                  <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>CSV Antrian</span>
+                </button>
+
+                <button
+                  id="admin-export-stats-report-btn"
+                  onClick={() => triggerExport('csv_stats')}
+                  className="px-3 py-2 bg-purple-950 hover:bg-purple-900 text-purple-300 border border-purple-500/40 rounded-xl text-xs font-bold flex items-center gap-1.5 transition"
+                  title="Unduh rekapitulasi statistik (.CSV)"
+                >
+                  <BarChart3 className="w-3.5 h-3.5 text-purple-400" />
+                  <span>CSV Statistik</span>
+                </button>
+
                 <button
                   id="admin-print-official-btn"
                   onClick={handlePrintOfficialReport}
-                  className="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-amber-400/30 transition"
+                  className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-amber-400/30 transition"
                 >
                   <Printer className="w-4 h-4" />
-                  <span>Cetak Laporan Resmi (Print / PDF)</span>
+                  <span>Cetak Laporan (Print / PDF)</span>
                 </button>
               </div>
             </div>
@@ -1320,6 +1557,184 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* EXPORT & ARSIP DATA MODAL (DOWNLOAD JSON / CSV FOR LOCAL ARCHIVE)         */}
+      {/* ========================================================================= */}
+      {showExportModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#0a1736] border-2 border-amber-400/70 rounded-3xl p-6 sm:p-8 max-w-2xl w-full text-slate-100 shadow-2xl relative max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95">
+            <button
+              onClick={() => setShowExportModal(false)}
+              className="absolute top-5 right-5 text-slate-400 hover:text-white p-2 rounded-xl bg-blue-950/60 hover:bg-blue-900 transition"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shrink-0 shadow-lg shadow-amber-400/20">
+                <Download className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-xl font-black text-white">
+                  PUSAT EKSPOR & ARSIP DATA LOKAL
+                </h3>
+                <p className="text-xs text-slate-300 mt-0.5">
+                  Unduh seluruh database antrian, log panggilan, notifikasi SMS, dan statistik ke komputer Anda.
+                </p>
+              </div>
+            </div>
+
+            {/* Quick Data Summary Badge */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6 bg-[#060e20] p-3 rounded-2xl border border-blue-900/80 text-center">
+              <div className="p-2">
+                <div className="text-[10px] uppercase font-bold text-slate-400">Total Tiket</div>
+                <div className="font-mono text-lg font-black text-amber-300">{tickets.length}</div>
+              </div>
+              <div className="p-2">
+                <div className="text-[10px] uppercase font-bold text-slate-400">Loket Aktif</div>
+                <div className="font-mono text-lg font-black text-white">{counters.filter(c => c.isOpen).length} / {counters.length}</div>
+              </div>
+              <div className="p-2">
+                <div className="text-[10px] uppercase font-bold text-slate-400">SMS Terkirim</div>
+                <div className="font-mono text-lg font-black text-emerald-400">{smsLogs.length}</div>
+              </div>
+              <div className="p-2">
+                <div className="text-[10px] uppercase font-bold text-slate-400">Format File</div>
+                <div className="font-mono text-xs font-bold text-amber-400 mt-1">JSON & CSV</div>
+              </div>
+            </div>
+
+            {/* Export List Options */}
+            <div className="space-y-3">
+              {/* Option 1: Master JSON Archive */}
+              <div className="bg-[#060e20] p-4 rounded-2xl border border-blue-900/80 hover:border-amber-400/60 transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/30 flex items-center justify-center shrink-0 mt-0.5">
+                    <FileCode className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-sm font-bold text-white">Arsip Master Lengkap (.JSON)</h4>
+                      <span className="text-[10px] bg-amber-400/20 text-amber-300 font-mono px-2 py-0.5 rounded font-bold">
+                        RECOMMENDED BACKUP
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Berisi seluruh struktur data sistem: profil dinas, semua data tiket, status loket, log panggilan, log SMS, dan ringkasan statistik.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  id="modal-export-json-btn"
+                  onClick={() => triggerExport('json')}
+                  className="w-full sm:w-auto px-4 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md shadow-amber-400/20 transition shrink-0"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Unduh JSON</span>
+                </button>
+              </div>
+
+              {/* Option 2: Tickets CSV */}
+              <div className="bg-[#060e20] p-4 rounded-2xl border border-blue-900/80 hover:border-emerald-400/60 transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0 mt-0.5">
+                    <FileSpreadsheet className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-sm font-bold text-white">Data Antrian Tabular (.CSV)</h4>
+                      <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-mono px-2 py-0.5 rounded font-bold">
+                        EXCEL / SPREADSHEET
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Tabel rinci seluruh nomor antrian, nama pemohon, NIK, HP, distrik, waktu ambil tiket, waktu dipanggil, durasi selesai, dan catatan petugas.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  id="modal-export-csv-tickets-btn"
+                  onClick={() => triggerExport('csv_tickets')}
+                  className="w-full sm:w-auto px-4 py-2.5 bg-emerald-950 hover:bg-emerald-500 hover:text-slate-950 text-emerald-300 font-bold rounded-xl text-xs border border-emerald-500/40 flex items-center justify-center gap-1.5 transition shrink-0"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Unduh CSV Antrian</span>
+                </button>
+              </div>
+
+              {/* Option 3: Call & SMS Logs CSV */}
+              <div className="bg-[#060e20] p-4 rounded-2xl border border-blue-900/80 hover:border-blue-400/60 transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/30 flex items-center justify-center shrink-0 mt-0.5">
+                    <Phone className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-sm font-bold text-white">Log Panggilan Loket & SMS (.CSV)</h4>
+                      <span className="text-[10px] bg-blue-500/20 text-blue-300 font-mono px-2 py-0.5 rounded font-bold">
+                        AUDIT LOG
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Jejak audit pemanggilan nomor di tiap loket (waktu panggil, nama petugas, counter) beserta riwayat SMS pengingat warga.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  id="modal-export-csv-calls-btn"
+                  onClick={() => triggerExport('csv_calls')}
+                  className="w-full sm:w-auto px-4 py-2.5 bg-blue-950 hover:bg-blue-500 hover:text-white text-blue-300 font-bold rounded-xl text-xs border border-blue-500/40 flex items-center justify-center gap-1.5 transition shrink-0"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Unduh Log CSV</span>
+                </button>
+              </div>
+
+              {/* Option 4: Summary Stats CSV */}
+              <div className="bg-[#060e20] p-4 rounded-2xl border border-blue-900/80 hover:border-purple-400/60 transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/30 flex items-center justify-center shrink-0 mt-0.5">
+                    <BarChart3 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-sm font-bold text-white">Rekapitulasi Statistik (.CSV)</h4>
+                      <span className="text-[10px] bg-purple-500/20 text-purple-300 font-mono px-2 py-0.5 rounded font-bold">
+                        EXECUTIVE SUMMARY
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Ringkasan eksekutif KPI pelayanan harian, rincian per loket dan layanan, serta sebaran persentase distrik pemohon.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  id="modal-export-csv-stats-btn"
+                  onClick={() => triggerExport('csv_stats')}
+                  className="w-full sm:w-auto px-4 py-2.5 bg-purple-950 hover:bg-purple-500 hover:text-white text-purple-300 font-bold rounded-xl text-xs border border-purple-500/40 flex items-center justify-center gap-1.5 transition shrink-0"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Unduh Statistik CSV</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex items-center justify-between pt-5 mt-6 border-t border-blue-900/80">
+              <span className="text-[11px] text-slate-400">
+                File otomatis diformat dengan UTF-8 BOM agar rapi saat dibuka di Microsoft Excel.
+              </span>
+              <button
+                onClick={() => setShowExportModal(false)}
+                className="px-5 py-2 rounded-xl bg-blue-950 hover:bg-blue-900 text-slate-200 border border-blue-800 font-bold text-xs transition"
+              >
+                Tutup
+              </button>
+            </div>
           </div>
         </div>
       )}

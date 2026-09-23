@@ -6,7 +6,6 @@ import {
   Minimize, 
   Users, 
   Clock, 
-  Sparkles, 
   Megaphone, 
   ExternalLink,
   Phone,
@@ -247,9 +246,8 @@ export const SingleCounterDisplayView: React.FC<SingleCounterDisplayViewProps> =
                 </div>
 
                 {activeTicket?.queueType === 'PRIORITAS' && (
-                  <span className="flex items-center gap-1 text-xs font-semibold bg-[#0b1f48] text-amber-300 px-2.5 py-1 rounded-md border border-amber-400/40">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                    Jalur Prioritas
+                  <span className="text-xs font-semibold text-amber-300">
+                    · Jalur Prioritas
                   </span>
                 )}
               </div>
