@@ -13,6 +13,7 @@ import {
   Volume2
 } from 'lucide-react';
 import { SingleCounterDisplayView } from './SingleCounterDisplayView';
+import { GisaLogo } from './GisaLogo';
 
 interface DisplayTvViewProps {
   tickets: Ticket[];
@@ -166,7 +167,11 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center">
+            <GisaLogo size="xs" />
+          </div>
+
           <button
             id="popout-master-display-btn"
             onClick={() => handleOpenPopout('all')}
@@ -456,7 +461,9 @@ export const DisplayTvView: React.FC<DisplayTvViewProps> = ({
           </div>
         </div>
 
-        <div className="hidden lg:flex items-center gap-2 text-xs text-slate-400 shrink-0 pl-4 border-l border-blue-900/60 font-mono">
+        <div className="hidden lg:flex items-center gap-3 text-xs text-slate-400 shrink-0 pl-4 border-l border-blue-900/60 font-mono">
+          <GisaLogo size="xs" />
+          <span>·</span>
           <span>Disdukcapil Keerom</span>
           <span>·</span>
           <span className="text-amber-400">100% Bebas Pungli</span>

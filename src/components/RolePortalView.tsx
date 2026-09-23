@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { UserRole, SystemSettings, CounterInfo } from '../types';
 import { KeeromLogo } from './KeeromLogo';
+import { GisaLogo } from './GisaLogo';
 
 interface RolePortalViewProps {
   onSelectRole: (role: UserRole, targetTab?: string, screen?: 'all' | number) => void;
@@ -95,7 +96,13 @@ export const RolePortalView: React.FC<RolePortalViewProps> = ({
         <div className="border border-blue-900/40 bg-[#0a1633]/60 rounded-3xl p-6 sm:p-8 backdrop-blur-sm relative overflow-hidden">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
             <div className="flex items-start sm:items-center gap-5">
-              <KeeromLogo size="lg" className="shrink-0" />
+              <div className="flex items-center gap-3 shrink-0">
+                <KeeromLogo size="lg" />
+                <div className="hidden sm:block h-10 w-px bg-blue-900/60" />
+                <div className="hidden sm:block">
+                  <GisaLogo size="xs" />
+                </div>
+              </div>
               <div>
                 <div className="flex items-center gap-2 text-xs text-amber-400 font-medium mb-1">
                   <span>Kabupaten Keerom</span>

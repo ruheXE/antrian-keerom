@@ -16,6 +16,7 @@ import {
   Check
 } from 'lucide-react';
 import { KeeromLogo } from './KeeromLogo';
+import { GisaLogo } from './GisaLogo';
 
 interface KioskViewProps {
   tickets: Ticket[];
@@ -73,7 +74,11 @@ export const KioskView: React.FC<KioskViewProps> = ({
         {/* Kiosk Hero Header */}
         <div className="bg-[#0a1633]/70 rounded-3xl p-6 sm:p-8 border border-blue-900/50 text-center relative overflow-hidden backdrop-blur-sm">
           <div className="relative z-10 flex flex-col items-center">
-            <KeeromLogo size="lg" className="mb-3" />
+            <div className="flex items-center justify-center gap-4 mb-3">
+              <KeeromLogo size="lg" />
+              <div className="h-10 w-px bg-blue-900/60" />
+              <GisaLogo size="sm" />
+            </div>
             <div className="flex items-center gap-2 text-xs font-semibold text-amber-400 mb-1">
               <span>Anjungan Mandiri Warga</span>
               <span aria-hidden="true" className="text-slate-600">·</span>

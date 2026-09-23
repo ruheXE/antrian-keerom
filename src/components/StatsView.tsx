@@ -10,11 +10,8 @@ import {
   Download, 
   Printer, 
   RotateCcw, 
-  Sparkles,
-  TrendingUp,
-  MapPin,
-  FileSpreadsheet,
-  MessageSquare
+  MapPin, 
+  FileSpreadsheet 
 } from 'lucide-react';
 
 interface StatsViewProps {
@@ -107,47 +104,48 @@ export const StatsView: React.FC<StatsViewProps> = ({
   };
 
   return (
-    <div className="w-full min-h-[calc(100vh-130px)] bg-[#071126] py-6 px-4 sm:px-6 lg:px-8 text-slate-100">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="w-full min-h-[calc(100vh-64px)] bg-[#060d1e] py-8 px-4 sm:px-6 lg:px-8 text-slate-100 flex flex-col justify-between">
+      <div className="max-w-6xl mx-auto w-full space-y-6">
+        
         {/* Top Header & Actions */}
-        <div className="bg-[#0a1736] rounded-3xl p-6 border-2 border-blue-900 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-[#0a1633]/80 rounded-2xl p-6 border border-blue-900/50 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 backdrop-blur-sm">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="p-2 rounded-xl bg-blue-950 text-amber-400 border border-amber-400/30">
-                <BarChart3 className="w-5 h-5 text-amber-400" />
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black text-white">
-                Laporan & Statistik Pelayanan Harian
-              </h2>
+            <div className="flex items-center gap-2 text-xs font-semibold text-amber-400 mb-1">
+              <span>Laporan Operasional Harian</span>
+              <span aria-hidden="true" className="text-slate-600">·</span>
+              <span>Disdukcapil Kabupaten Keerom</span>
             </div>
-            <p className="text-xs text-slate-400 mt-1">
-              Rekapitulasi aktivitas loket antrian Dinas Kependudukan dan Pencatatan Sipil Kabupaten Keerom.
+            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+              Statistik Pelayanan & Rekapitulasi Loket
+            </h1>
+            <p className="text-xs text-slate-300 mt-1">
+              Ringkasan aktivitas tiket, estimasi beban kerja loket, dan demografi distrik pemohon adminduk.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             <button
               id="export-csv-btn"
               onClick={handleExportCsv}
-              className="flex items-center gap-1.5 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl text-xs font-black transition shadow-md shadow-amber-400/20"
+              className="flex items-center gap-2 px-4 py-2 bg-amber-400 hover:bg-amber-300 active:scale-[0.98] text-slate-950 rounded-xl text-xs font-bold transition shadow-sm"
             >
-              <FileSpreadsheet className="w-4 h-4 text-slate-950" />
+              <FileSpreadsheet className="w-3.5 h-3.5" />
               <span>Ekspor CSV</span>
             </button>
 
             <button
               id="print-summary-btn"
               onClick={handlePrintSummary}
-              className="flex items-center gap-1.5 px-4 py-2 bg-[#0e214d] hover:bg-[#12285a] text-white border border-blue-800 rounded-xl text-xs font-bold transition shadow-xs"
+              className="flex items-center gap-2 px-4 py-2 bg-[#060e20] hover:bg-[#0e214d] text-slate-200 border border-blue-900/80 rounded-xl text-xs font-semibold transition"
             >
-              <Printer className="w-4 h-4 text-amber-400" />
+              <Printer className="w-3.5 h-3.5 text-amber-400" />
               <span>Cetak Laporan</span>
             </button>
 
             <button
               id="reset-queue-open-modal-btn"
               onClick={() => setShowResetConfirm(true)}
-              className="flex items-center gap-1.5 px-3 py-2 bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-800 rounded-xl text-xs font-bold transition"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 rounded-xl text-xs font-semibold transition"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Reset Harian</span>
@@ -155,62 +153,67 @@ export const StatsView: React.FC<StatsViewProps> = ({
           </div>
         </div>
 
-        {/* Top Metric Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          <div className="bg-[#0a1736] p-4 rounded-2xl border border-blue-900 shadow-md">
-            <span className="text-[11px] font-bold text-slate-400 uppercase">Total Antrian</span>
-            <div className="text-2xl sm:text-3xl font-black text-white mt-1 font-mono">
+        {/* 6 High-Contrast Stat Cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+          <div className="bg-[#0a1633]/80 p-4 rounded-2xl border border-blue-900/50 shadow-xs">
+            <span className="text-[11px] font-medium text-slate-400">Total Antrian</span>
+            <div className="text-2xl sm:text-3xl font-bold text-white mt-1 font-mono tabular-nums">
               {total}
             </div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Hari ini</div>
+            <div className="text-[11px] text-slate-400 mt-1">Hari ini</div>
           </div>
 
-          <div className="bg-[#0a1736] p-4 rounded-2xl border border-blue-900 shadow-md">
-            <span className="text-[11px] font-bold text-amber-400 uppercase">Menunggu</span>
-            <div className="text-2xl sm:text-3xl font-black text-amber-400 mt-1 font-mono">
+          <div className="bg-[#0a1633]/80 p-4 rounded-2xl border border-blue-900/50 shadow-xs">
+            <span className="text-[11px] font-medium text-amber-400">Menunggu</span>
+            <div className="text-2xl sm:text-3xl font-bold text-amber-400 mt-1 font-mono tabular-nums">
               {waiting}
             </div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Belum dipanggil</div>
+            <div className="text-[11px] text-slate-400 mt-1">Belum dipanggil</div>
           </div>
 
-          <div className="bg-[#0a1736] p-4 rounded-2xl border border-blue-900 shadow-md">
-            <span className="text-[11px] font-bold text-blue-400 uppercase">Sedang Dilayani</span>
-            <div className="text-2xl sm:text-3xl font-black text-blue-400 mt-1 font-mono">
+          <div className="bg-[#0a1633]/80 p-4 rounded-2xl border border-blue-900/50 shadow-xs">
+            <span className="text-[11px] font-medium text-blue-400">Sedang Dilayani</span>
+            <div className="text-2xl sm:text-3xl font-bold text-blue-300 mt-1 font-mono tabular-nums">
               {serving + calling}
             </div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Di meja loket</div>
+            <div className="text-[11px] text-slate-400 mt-1">Di meja loket</div>
           </div>
 
-          <div className="bg-[#0a1736] p-4 rounded-2xl border border-blue-900 shadow-md">
-            <span className="text-[11px] font-bold text-emerald-400 uppercase">Selesai</span>
-            <div className="text-2xl sm:text-3xl font-black text-emerald-400 mt-1 font-mono">
+          <div className="bg-[#0a1633]/80 p-4 rounded-2xl border border-blue-900/50 shadow-xs">
+            <span className="text-[11px] font-medium text-emerald-400">Tuntas Selesai</span>
+            <div className="text-2xl sm:text-3xl font-bold text-emerald-400 mt-1 font-mono tabular-nums">
               {completed}
             </div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Tuntas dilayani</div>
+            <div className="text-[11px] text-slate-400 mt-1">Pelayanan tuntas</div>
           </div>
 
-          <div className="bg-[#0a1736] p-4 rounded-2xl border border-blue-900 shadow-md">
-            <span className="text-[11px] font-bold text-rose-400 uppercase">Terlewat</span>
-            <div className="text-2xl sm:text-3xl font-black text-rose-400 mt-1 font-mono">
+          <div className="bg-[#0a1633]/80 p-4 rounded-2xl border border-blue-900/50 shadow-xs">
+            <span className="text-[11px] font-medium text-rose-400">Terlewat</span>
+            <div className="text-2xl sm:text-3xl font-bold text-rose-400 mt-1 font-mono tabular-nums">
               {skipped}
             </div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Warga tidak hadir</div>
+            <div className="text-[11px] text-slate-400 mt-1">Tidak hadir</div>
           </div>
 
-          <div className="bg-[#0a1736] p-4 rounded-2xl border border-blue-900 shadow-md">
-            <span className="text-[11px] font-bold text-amber-300 uppercase">Prioritas</span>
-            <div className="text-2xl sm:text-3xl font-black text-amber-300 mt-1 font-mono">
+          <div className="bg-[#0a1633]/80 p-4 rounded-2xl border border-blue-900/50 shadow-xs">
+            <span className="text-[11px] font-medium text-amber-300">Jalur Prioritas</span>
+            <div className="text-2xl sm:text-3xl font-bold text-amber-300 mt-1 font-mono tabular-nums">
               {priorityCount}
             </div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Lansia/Hamil/Difabel</div>
+            <div className="text-[11px] text-slate-400 mt-1">Lansia/Hamil/Difabel</div>
           </div>
         </div>
 
         {/* Counter Breakdown Grid */}
-        <div className="bg-[#0a1736] rounded-3xl p-6 border-2 border-blue-900 shadow-xl">
-          <h3 className="text-sm font-extrabold uppercase tracking-wider text-amber-400 mb-4">
-            Rekapitulasi Beban Kerja per Loket Pelayanan
-          </h3>
+        <div className="bg-[#0a1633]/80 rounded-2xl p-6 border border-blue-900/50 shadow-sm">
+          <div className="flex items-center justify-between mb-4 border-b border-blue-900/40 pb-3">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-amber-400">
+              Rekapitulasi Beban Kerja per Meja Loket
+            </h2>
+            <div className="text-xs text-slate-400">
+              Rata-rata Waktu Layanan: <span className="text-white font-mono font-semibold tabular-nums">{avgServiceMinutes > 0 ? `~${avgServiceMinutes} menit` : 'Belum tercatat'}</span>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             {counters.map((c) => {
@@ -222,47 +225,47 @@ export const StatsView: React.FC<StatsViewProps> = ({
               const service = SERVICES_DATA.find(s => s.code === c.serviceCode);
 
               return (
-                <div key={c.id} className="bg-[#07132c] p-4 rounded-2xl border border-blue-900 flex flex-col justify-between">
+                <div key={c.id} className="bg-[#060e20] p-4 rounded-xl border border-blue-900/60 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="font-mono font-black text-amber-400 text-lg">
+                      <span className="font-mono font-bold text-amber-400 text-lg tabular-nums">
                         [{c.serviceCode}]
                       </span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-950 text-slate-300 rounded-md border border-blue-800">
+                      <span className="text-[10px] font-medium text-slate-400">
                         {c.name}
                       </span>
                     </div>
 
-                    <h4 className="font-bold text-xs text-white leading-snug line-clamp-1">
+                    <h3 className="font-semibold text-xs text-white leading-snug line-clamp-1">
                       {service?.name}
-                    </h4>
+                    </h3>
                     <p className="text-[11px] text-slate-400 mt-0.5 line-clamp-1">
-                      {c.officerName}
+                      Petugas: {c.officerName}
                     </p>
 
                     <div className="mt-3 space-y-1 text-xs text-slate-300">
                       <div className="flex justify-between">
-                        <span>Total Masuk:</span>
-                        <span className="font-bold text-white">{cTotal}</span>
+                        <span className="text-slate-400">Masuk:</span>
+                        <span className="font-mono font-semibold text-white tabular-nums">{cTotal}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span>Tuntas:</span>
-                        <span className="font-bold text-emerald-400">{cCompleted}</span>
+                        <span className="text-slate-400">Tuntas:</span>
+                        <span className="font-mono font-semibold text-emerald-400 tabular-nums">{cCompleted}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span>Menunggu:</span>
-                        <span className="font-bold text-amber-400">{cWaiting}</span>
+                        <span className="text-slate-400">Menunggu:</span>
+                        <span className="font-mono font-semibold text-amber-400 tabular-nums">{cWaiting}</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Simple visual bar */}
-                  <div className="mt-3 pt-2 border-t border-blue-900/60">
-                    <div className="flex justify-between text-[10px] text-slate-400 mb-1">
-                      <span>Beban</span>
-                      <span className="text-amber-400 font-bold">{percentage}%</span>
+                  {/* Visual Load Bar */}
+                  <div className="mt-3 pt-2.5 border-t border-blue-900/40">
+                    <div className="flex justify-between text-[11px] text-slate-400 mb-1">
+                      <span>Porsi Beban</span>
+                      <span className="font-mono font-semibold text-amber-400 tabular-nums">{percentage}%</span>
                     </div>
-                    <div className="w-full bg-blue-950 h-1.5 rounded-full overflow-hidden border border-blue-900">
+                    <div className="w-full bg-[#0a1633] h-1.5 rounded-full overflow-hidden border border-blue-900/80">
                       <div
                         className="bg-amber-400 h-full rounded-full transition-all"
                         style={{ width: `${percentage}%` }}
@@ -276,19 +279,19 @@ export const StatsView: React.FC<StatsViewProps> = ({
         </div>
 
         {/* District Demographic Breakdown */}
-        <div className="bg-[#0a1736] rounded-3xl p-6 border-2 border-blue-900 shadow-xl">
-          <h3 className="text-sm font-extrabold uppercase tracking-wider text-amber-400 mb-3 flex items-center gap-2">
+        <div className="bg-[#0a1633]/80 rounded-2xl p-6 border border-blue-900/50 shadow-sm">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 flex items-center gap-2">
             <MapPin className="w-4 h-4 text-amber-400" />
             Asal Distrik Warga Pemohon Adminduk (Kabupaten Keerom)
-          </h3>
+          </h2>
           
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-3">
             {['Arso', 'Arso Barat', 'Arso Timur', 'Skanto', 'Waris', 'Senggi', 'Web', 'Mannem', 'Towe'].map((dist) => {
               const count = tickets.filter(t => t.citizenDistrict === dist).length;
               return (
-                <div key={dist} className="bg-[#07132c] p-3 rounded-xl border border-blue-900 text-center">
-                  <div className="text-xs font-semibold text-slate-300">{dist}</div>
-                  <div className="text-lg font-black text-amber-400 font-mono mt-0.5">
+                <div key={dist} className="bg-[#060e20] p-3 rounded-xl border border-blue-900/60 text-center">
+                  <div className="text-xs font-medium text-slate-300">{dist}</div>
+                  <div className="text-lg font-bold text-amber-400 font-mono mt-0.5 tabular-nums">
                     {count}
                   </div>
                   <div className="text-[10px] text-slate-400">pemohon</div>
@@ -301,24 +304,24 @@ export const StatsView: React.FC<StatsViewProps> = ({
 
       {/* Confirmation Modal for Resetting Day Queue */}
       {showResetConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-xs p-4">
-          <div className="bg-[#0a1736] rounded-2xl p-6 max-w-sm w-full border-2 border-blue-800 shadow-2xl space-y-4 text-white">
-            <div className="w-12 h-12 rounded-full bg-rose-950 text-rose-400 flex items-center justify-center mx-auto border border-rose-700/50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="bg-[#0a1633] rounded-2xl p-6 max-w-sm w-full border border-blue-800 shadow-2xl space-y-4 text-white">
+            <div className="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center mx-auto border border-rose-500/30">
               <AlertTriangle className="w-6 h-6" />
             </div>
             <div className="text-center">
-              <h4 className="text-base font-bold text-white">
+              <h3 className="text-base font-bold text-white">
                 Reset Antrian Hari Ini?
-              </h4>
-              <p className="text-xs text-slate-300 mt-1">
-                Tindakan ini akan mengosongkan semua nomor antrian aktif dan mengembalikan antrian ke nomor awal (A-001, B-001, dst) untuk hari baru.
+              </h3>
+              <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
+                Tindakan ini akan mengosongkan semua nomor antrian aktif dan mengembalikan antrian ke nomor awal (A001, B001, dst) untuk hari baru.
               </p>
             </div>
-            <div className="flex items-center justify-end gap-2 pt-2">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-blue-900/40">
               <button
                 type="button"
                 onClick={() => setShowResetConfirm(false)}
-                className="px-4 py-2 text-xs font-bold text-slate-300 hover:bg-[#07132c] rounded-lg transition"
+                className="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white rounded-xl transition"
               >
                 Batal
               </button>
@@ -329,7 +332,7 @@ export const StatsView: React.FC<StatsViewProps> = ({
                   onResetData();
                   setShowResetConfirm(false);
                 }}
-                className="px-4 py-2 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-lg transition shadow-md"
+                className="px-4 py-2 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl transition"
               >
                 Ya, Reset Sekarang
               </button>

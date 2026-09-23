@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Ticket, SystemSettings } from '../types';
 import { QRCodeSvg } from './QRCodeSvg';
-import { Printer, CheckCircle, Clock, X, AlertCircle, Sparkles } from 'lucide-react';
+import { Printer, Clock, X, Check } from 'lucide-react';
 import { SERVICES_DATA } from '../data/servicesData';
 
 interface TicketPrintModalProps {
@@ -41,33 +41,34 @@ export const TicketPrintModal: React.FC<TicketPrintModalProps> = ({
   const estimatedWaitMin = Math.max(2, queueAheadCount * (service?.estimatedMinutes || 10));
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 overflow-y-auto">
-      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden my-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
+      <div className="relative w-full max-w-sm bg-[#0a1633] rounded-2xl shadow-2xl border border-blue-900/60 overflow-hidden my-6">
+        
         {/* Top Header */}
-        <div className="bg-[#0a1736] text-white px-5 py-4 flex items-center justify-between border-b border-blue-900">
+        <div className="px-5 py-4 flex items-center justify-between border-b border-blue-900/50">
           <div className="flex items-center space-x-2">
-            <Printer className="w-5 h-5 text-amber-400" />
-            <h3 className="font-bold text-base tracking-wide text-white">Slip Antrian Pelayanan</h3>
+            <Printer className="w-4 h-4 text-amber-400" />
+            <h3 className="font-bold text-sm tracking-wide text-white">Pratinjau Slip Antrian</h3>
           </div>
           <button
             id="close-ticket-modal-btn"
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-[#07132c] transition"
+            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-[#060e20] transition"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Printable Ticket Receipt Card */}
-        <div className="p-6 bg-[#071126] flex flex-col items-center">
+        <div className="p-5 bg-[#060d1e] flex flex-col items-center">
           <div
             ref={printRef}
             id="printable-ticket"
-            className="w-full max-w-xs bg-white p-5 rounded-xl border border-dashed border-slate-300 shadow-xl text-slate-800 font-mono text-center relative"
+            className="w-full bg-white p-6 rounded-xl border border-dashed border-slate-300 shadow-lg text-slate-800 font-mono text-center relative"
           >
             {/* Cutout notch effect */}
-            <div className="absolute -left-3 top-1/2 w-6 h-6 bg-[#071126] rounded-full border-r border-slate-300 transform -translate-y-1/2" />
-            <div className="absolute -right-3 top-1/2 w-6 h-6 bg-[#071126] rounded-full border-l border-slate-300 transform -translate-y-1/2" />
+            <div className="absolute -left-2.5 top-1/2 w-5 h-5 bg-[#060d1e] rounded-full border-r border-slate-300 transform -translate-y-1/2" />
+            <div className="absolute -right-2.5 top-1/2 w-5 h-5 bg-[#060d1e] rounded-full border-l border-slate-300 transform -translate-y-1/2" />
 
             {/* Receipt Header */}
             <div className="border-b border-dashed border-slate-300 pb-3">
@@ -76,7 +77,7 @@ export const TicketPrintModal: React.FC<TicketPrintModalProps> = ({
                 alt="Lambang Kabupaten Keerom"
                 className="w-10 h-auto mx-auto mb-1 object-contain"
               />
-              <div className="text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+              <div className="text-[11px] font-bold tracking-wider text-slate-600 uppercase">
                 {settings.officeRegency}
               </div>
               <div className="text-xs font-black tracking-tight text-slate-900 uppercase mt-0.5">
@@ -92,18 +93,17 @@ export const TicketPrintModal: React.FC<TicketPrintModalProps> = ({
               <div className="text-[11px] uppercase tracking-wider text-slate-500 mb-1">
                 NOMOR ANTRIAN ANDA
               </div>
-              <div className="text-5xl font-extrabold tracking-tight text-[#0a1736] my-1 font-sans">
+              <div className="text-5xl font-extrabold tracking-tight text-[#0a1633] my-1 font-mono tabular-nums">
                 {ticket.ticketNumber}
               </div>
               {ticket.queueType === 'PRIORITAS' ? (
-                <div className="inline-flex items-center gap-1 px-2.5 py-0.5 mt-1 rounded-full bg-amber-100 text-amber-900 text-[11px] font-bold font-sans border border-amber-300">
-                  <Sparkles className="w-3 h-3 text-amber-600" />
-                  JALUR PRIORITAS KHUSUS
+                <div className="text-xs font-bold text-amber-700 mt-1">
+                  ● JALUR PRIORITAS KHUSUS
                 </div>
               ) : (
-                <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded font-sans">
+                <div className="text-[11px] font-semibold text-slate-600 mt-1">
                   JALUR REGULER
-                </span>
+                </div>
               )}
               <div className="text-xs font-bold text-slate-800 mt-2 font-sans">
                 {ticket.serviceName}
@@ -121,17 +121,14 @@ export const TicketPrintModal: React.FC<TicketPrintModalProps> = ({
               {ticket.citizenNik && (
                 <div className="flex justify-between">
                   <span className="text-slate-400">NIK:</span>
-                  <span className="font-mono text-slate-800">{ticket.citizenNik}</span>
+                  <span className="font-mono text-slate-800 tabular-nums">{ticket.citizenNik}</span>
                 </div>
               )}
               {ticket.citizenPhone && (
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-400">No. HP:</span>
-                  <span className="font-mono text-slate-800 font-semibold flex items-center gap-1">
+                  <span className="text-slate-400">No. Ponsel:</span>
+                  <span className="font-mono text-slate-800 font-semibold tabular-nums">
                     {ticket.citizenPhone}
-                    <span className="text-[9px] bg-blue-100 text-blue-900 px-1 py-0.2 rounded font-sans font-bold">
-                      SMS AKTIF
-                    </span>
                   </span>
                 </div>
               )}
@@ -143,7 +140,7 @@ export const TicketPrintModal: React.FC<TicketPrintModalProps> = ({
               )}
               <div className="flex justify-between">
                 <span className="text-slate-400">Waktu Ambil:</span>
-                <span className="font-medium text-slate-700">{formattedTime}</span>
+                <span className="font-mono text-slate-700 tabular-nums">{formattedTime}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">Tanggal:</span>
@@ -152,21 +149,21 @@ export const TicketPrintModal: React.FC<TicketPrintModalProps> = ({
             </div>
 
             {/* Queue Info */}
-            <div className="py-3 bg-amber-50 rounded-lg my-2 px-2 text-center font-sans border border-amber-200/60">
+            <div className="py-2.5 bg-slate-50 rounded-lg my-2.5 px-2 text-center font-sans border border-slate-200">
               <div className="text-xs text-slate-900 font-medium">
                 Antrian di depan Anda:{' '}
-                <span className="font-bold text-amber-700 text-sm">{queueAheadCount} orang</span>
+                <span className="font-bold text-[#0a1633] font-mono tabular-nums">{queueAheadCount} orang</span>
               </div>
-              <div className="text-[11px] text-slate-700 flex items-center justify-center gap-1 mt-0.5">
+              <div className="text-[11px] text-slate-600 flex items-center justify-center gap-1 mt-0.5">
                 <Clock className="w-3 h-3 text-amber-600" />
-                Est. Tunggu: ~{estimatedWaitMin} menit
+                <span>Est. Tunggu: ~{estimatedWaitMin} menit</span>
               </div>
             </div>
 
             {/* QR Code */}
             <div className="pt-2 flex flex-col items-center">
               <QRCodeSvg value={`KEEROM-DUKCAPIL-${ticket.ticketNumber}-${ticket.createdAt}`} size={96} />
-              <div className="text-[10px] text-slate-400 mt-1.5 font-mono">
+              <div className="text-[10px] text-slate-400 mt-1 font-mono">
                 Scan verifikasi tiket di loket
               </div>
             </div>
@@ -175,32 +172,33 @@ export const TicketPrintModal: React.FC<TicketPrintModalProps> = ({
             <div className="mt-3 pt-2 border-t border-dashed border-slate-300 text-[10px] text-slate-500 font-sans leading-tight">
               *Harap perhatikan layar monitor dan panggilan suara.
               <br />
-              Pelayanan Adminduk <span className="font-bold text-[#0a1736]">GRATIS</span> (Tanpa Pungutan).
+              Pelayanan Adminduk <strong className="text-slate-900 font-bold">100% BEBAS BIAYA (GRATIS)</strong>.
               <div className="mt-2 pt-1 border-t border-dotted border-slate-200 text-[9px] text-slate-400">
-                Sistem Antrian oleh <span className="font-semibold text-slate-600">heraX (082189585776)</span>
+                Sistem Antrian Terpadu Disdukcapil Keerom
               </div>
             </div>
           </div>
         </div>
 
         {/* Modal Action Buttons */}
-        <div className="p-4 bg-[#0a1736] border-t border-blue-900 flex items-center justify-end gap-3">
+        <div className="p-4 bg-[#0a1633] border-t border-blue-900/50 flex items-center justify-end gap-2.5">
           <button
             id="print-cancel-btn"
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-slate-300 hover:bg-[#07132c] rounded-lg transition"
+            className="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white rounded-xl transition"
           >
-            Selesai
+            Tutup
           </button>
           <button
             id="print-action-btn"
             onClick={handlePrint}
-            className="flex items-center gap-2 px-5 py-2.5 text-sm font-black text-slate-950 bg-amber-400 hover:bg-amber-300 active:bg-amber-500 rounded-lg shadow-md shadow-amber-400/20 transition"
+            className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 active:scale-[0.98] rounded-xl transition shadow-sm"
           >
-            <Printer className="w-4 h-4 text-slate-950" />
-            Cetak Tiket Fisik
+            <Printer className="w-3.5 h-3.5 text-slate-950" />
+            <span>Cetak Tiket Fisik</span>
           </button>
         </div>
+
       </div>
     </div>
   );

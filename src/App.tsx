@@ -527,7 +527,15 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#071126] flex flex-col font-sans text-slate-100">
+    <div className="min-h-[100dvh] bg-[#060d1e] flex flex-col font-sans text-slate-100">
+      {/* Skip to Content for accessibility */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-amber-400 focus:text-slate-950 focus:font-bold focus:rounded-xl focus:shadow-lg focus:outline-none"
+      >
+        Langsung ke konten utama
+      </a>
+
       {/* Universal Header in Navy & Yellow */}
       <Header
         activeTab={activeTab}
@@ -540,7 +548,7 @@ export default function App() {
       />
 
       {/* Main View Router */}
-      <main className="flex-1">
+      <main id="main-content" className="flex-1 focus:outline-none">
         {/* Role & Screen Portal View */}
         {(activeTab === 'portal' || userRole === 'portal') && (
           <RolePortalView

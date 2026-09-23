@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { KeeromLogo } from './KeeromLogo';
+import { GisaLogo } from './GisaLogo';
 import { 
   Tv, 
   Ticket, 
@@ -173,27 +174,35 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="bg-[#060e20] text-slate-100 border-b border-blue-900/40 sticky top-0 z-40 backdrop-blur-md">
       {/* Top Bar Contract: Zone 1 (Brand) — Zone 2 (Nav Links) — Zone 3 (Actions) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-        {/* Zone 1: Single text element wordmark with insignia */}
-        <button
-          onClick={() => {
-            if (userRole === 'admin') setActiveTab('admin');
-            else if (userRole === 'operator') setActiveTab('operator');
-            else if (userRole === 'kiosk') setActiveTab('kiosk');
-            else if (userRole === 'display') setActiveTab('display');
-            else setActiveTab('portal');
-          }}
-          className="flex items-center gap-3 text-left group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-lg p-1"
-        >
-          <KeeromLogo size="sm" />
-          <div className="leading-tight">
-            <span className="text-base font-bold tracking-tight text-white group-hover:text-amber-300 transition-colors">
-              Disdukcapil Keerom
-            </span>
-            <span className="hidden sm:inline text-xs text-slate-400 font-normal ml-2">
-              · Sistem Antrian
-            </span>
+        {/* Zone 1: Single text element wordmark with insignia & GISA logo */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => {
+              if (userRole === 'admin') setActiveTab('admin');
+              else if (userRole === 'operator') setActiveTab('operator');
+              else if (userRole === 'kiosk') setActiveTab('kiosk');
+              else if (userRole === 'display') setActiveTab('display');
+              else setActiveTab('portal');
+            }}
+            className="flex items-center gap-2.5 text-left group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-lg p-1"
+          >
+            <KeeromLogo size="sm" />
+            <div className="leading-tight">
+              <span className="text-base font-bold tracking-tight text-white group-hover:text-amber-300 transition-colors">
+                Disdukcapil Keerom
+              </span>
+              <span className="hidden sm:inline text-xs text-slate-400 font-normal ml-2">
+                · Sistem Antrian
+              </span>
+            </div>
+          </button>
+
+          <div className="hidden md:block h-4 w-px bg-blue-900/60" />
+
+          <div className="hidden md:flex items-center">
+            <GisaLogo size="xs" />
           </div>
-        </button>
+        </div>
 
         {/* Zone 2: 4-6 Clean text navigation links with single-line labels */}
         <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-xs font-semibold text-slate-300">

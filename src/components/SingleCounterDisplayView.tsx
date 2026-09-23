@@ -14,6 +14,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { KeeromLogo } from './KeeromLogo';
+import { GisaLogo } from './GisaLogo';
 
 interface SingleCounterDisplayViewProps {
   counterId: number;
@@ -173,6 +174,9 @@ export const SingleCounterDisplayView: React.FC<SingleCounterDisplayViewProps> =
         <div className="bg-[#0a1633] rounded-xl p-4 sm:p-6 border border-blue-900/80 shadow-sm flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
             <KeeromLogo size="lg" />
+            <div className="hidden sm:block">
+              <GisaLogo size="xs" />
+            </div>
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[11px] uppercase font-bold tracking-wider text-amber-400 bg-[#050d1e] px-2.5 py-0.5 rounded-md border border-amber-400/30">

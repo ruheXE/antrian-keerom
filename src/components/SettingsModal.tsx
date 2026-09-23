@@ -8,7 +8,6 @@ import {
   Settings, 
   Save, 
   RotateCcw, 
-  Sparkles, 
   Megaphone, 
   Building,
   Check,
@@ -265,12 +264,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* Keamanan Password Akses Role (Kecuali Pendaftar) */}
           <div className="bg-[#07132c] border border-amber-400/40 rounded-2xl p-4 space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <div className="flex items-center gap-2 text-amber-400 font-black text-xs uppercase tracking-wider">
+              <div className="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase tracking-wider">
                 <KeyRound className="w-4 h-4" />
                 <span>Keamanan Password Akses Layar Peran</span>
               </div>
-              <span className="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full font-bold">
-                Kiosk & Pendaftar: Bebas Akses (Tanpa Password)
+              <span className="text-xs font-semibold text-emerald-400">
+                · Kiosk Bebas Akses (Tanpa Password)
               </span>
             </div>
             <p className="text-[11px] text-slate-400 leading-relaxed">
@@ -344,7 +343,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     <Ticket className="w-3.5 h-3.5 text-amber-400" />
                     <span>Layar Kiosk Tiket Warga</span>
                   </label>
-                  <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-1.5 py-0.2 rounded border border-emerald-500/40">Bebas Akses</span>
+                  <span className="text-xs font-semibold text-emerald-400">· Bebas Akses</span>
                 </div>
                 <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
                   Layar Kiosk cetak tiket tidak memerlukan password agar masyarakat dapat langsung mengambil nomor antrian tanpa hambatan.

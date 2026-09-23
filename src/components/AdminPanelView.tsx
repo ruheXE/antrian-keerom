@@ -224,34 +224,33 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
   };
 
   return (
-    <div className="w-full min-h-[calc(100vh-130px)] bg-[#071126] text-slate-100 p-4 sm:p-6 lg:p-8">
+    <div className="w-full min-h-[calc(100dvh-64px)] bg-[#060d1e] text-slate-100 p-4 sm:p-6 lg:p-8 flex flex-col justify-between">
       {/* Toast Notification */}
       {exportSuccessMsg && (
-        <div className="fixed top-20 right-6 z-50 bg-emerald-500 text-slate-950 px-4 py-3 rounded-2xl font-bold shadow-2xl flex items-center gap-2 border border-emerald-300 animate-in fade-in slide-in-from-top-4">
-          <Check className="w-5 h-5 text-slate-950" />
+        <div className="fixed top-20 right-6 z-50 bg-emerald-500 text-slate-950 px-4 py-3 rounded-xl font-bold shadow-xl flex items-center gap-2 border border-emerald-400">
+          <Check className="w-4 h-4 text-slate-950" />
           <span className="text-xs">{exportSuccessMsg}</span>
         </div>
       )}
 
-      {/* Header Banner - Navy & Yellow Theme */}
-      <div className="max-w-7xl mx-auto bg-gradient-to-r from-[#0c1a38] via-[#102452] to-[#0c1a38] border-2 border-amber-400/50 rounded-3xl p-5 sm:p-7 shadow-2xl mb-8">
+      {/* Header Banner - Dignified Civic Surface */}
+      <div className="max-w-7xl mx-auto w-full bg-[#0a1633]/80 border border-blue-900/50 rounded-2xl p-6 shadow-sm backdrop-blur-sm mb-6">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-lg shadow-amber-400/20 shrink-0">
-              <ShieldCheck className="w-8 h-8" />
+            <div className="w-12 h-12 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/30 flex items-center justify-center font-bold shrink-0">
+              <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs uppercase font-extrabold tracking-widest text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-md border border-amber-400/30">
-                  HAK AKSES ADMINISTRATOR
-                </span>
-                <span className="text-xs text-slate-400 hidden sm:inline">• Disdukcapil Kab. Keerom</span>
+              <div className="flex items-center gap-2 text-xs font-semibold text-amber-400 mb-1">
+                <span>Hak Akses Administrator</span>
+                <span aria-hidden="true" className="text-slate-600">·</span>
+                <span className="text-slate-400">Disdukcapil Kabupaten Keerom</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-1">
-                PUSAT KONTROL & MANAJEMEN ADMIN
+              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                Pusat Kontrol & Manajemen Pelayanan
               </h1>
-              <p className="text-xs sm:text-sm text-slate-300">
-                Memantau antrian live, memodifikasi data tiket & loket, serta mencetak & mengekspor laporan resmi Disdukcapil.
+              <p className="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed text-pretty">
+                Pemantauan antrian langsung, modifikasi data tiket & loket, serta pencetakan dan ekspor arsip resmi.
               </p>
             </div>
           </div>
@@ -261,51 +260,51 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
             <button
               id="admin-quick-export-modal-btn"
               onClick={() => setShowExportModal(true)}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black bg-blue-950 hover:bg-blue-900 text-amber-300 border border-amber-400/50 transition shadow-lg shrink-0"
+              className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-[#060e20] hover:bg-[#0e214d] text-amber-400 border border-blue-900/80 active:scale-[0.98] transition shadow-xs shrink-0"
               title="Ekspor seluruh data antrian, log, dan statistik ke file JSON / CSV"
             >
-              <Download className="w-4 h-4 text-amber-400" />
+              <Download className="w-3.5 h-3.5 text-amber-400" />
               <span>Ekspor & Arsip Data</span>
             </button>
 
             {/* Sub-tab switcher */}
-            <div className="flex items-center gap-1 bg-[#060e20] p-1.5 rounded-2xl border border-blue-900/80 w-full sm:w-auto overflow-x-auto">
+            <div className="flex items-center gap-1 bg-[#060e20] p-1 rounded-xl border border-blue-900/60 w-full sm:w-auto overflow-x-auto">
               <button
                 id="admin-subtab-monitor"
                 onClick={() => setActiveSubTab('monitor')}
-                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-black transition whitespace-nowrap ${
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap ${
                   activeSubTab === 'monitor'
-                    ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                    ? 'bg-amber-400 text-slate-950 shadow-xs'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/40'
                 }`}
               >
-                <BarChart3 className="w-4 h-4" />
+                <BarChart3 className="w-3.5 h-3.5" />
                 <span>1. Memantau Live</span>
               </button>
 
               <button
                 id="admin-subtab-manage"
                 onClick={() => setActiveSubTab('manage')}
-                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-black transition whitespace-nowrap ${
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap ${
                   activeSubTab === 'manage'
-                    ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                    ? 'bg-amber-400 text-slate-950 shadow-xs'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/40'
                 }`}
               >
-                <Edit3 className="w-4 h-4" />
+                <Edit3 className="w-3.5 h-3.5" />
                 <span>2. Ubah Data</span>
               </button>
 
               <button
                 id="admin-subtab-report"
                 onClick={() => setActiveSubTab('report')}
-                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-black transition whitespace-nowrap ${
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap ${
                   activeSubTab === 'report'
-                    ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                    ? 'bg-amber-400 text-slate-950 shadow-xs'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/40'
                 }`}
               >
-                <Printer className="w-4 h-4" />
+                <Printer className="w-3.5 h-3.5" />
                 <span>3. Laporan & Ekspor</span>
               </button>
             </div>
@@ -319,88 +318,78 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
         {/* ========================================================================= */}
         {activeSubTab === 'monitor' && (
           <div className="space-y-6">
-            {/* Top KPI Cards in Navy & Gold */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-              <div className="bg-[#0a1736] border border-blue-900/80 rounded-2xl p-4 shadow-lg">
-                <div className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">
-                  TOTAL TIKET
-                </div>
-                <div className="font-mono text-3xl font-black text-white mt-1">
+            {/* Top KPI Cards in Single-Elevation Navy */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+              <div className="bg-[#0a1633]/80 border border-blue-900/50 rounded-2xl p-4 shadow-xs">
+                <span className="text-[11px] text-slate-400 font-medium">Total Tiket</span>
+                <div className="font-mono text-2xl sm:text-3xl font-bold text-white mt-1 tabular-nums">
                   {totalTickets}
                 </div>
-                <div className="text-[10px] text-amber-400 mt-0.5">Semua Layanan Hari Ini</div>
+                <div className="text-[11px] text-slate-400 mt-1">Hari ini</div>
               </div>
 
-              <div className="bg-[#0a1736] border border-blue-900/80 rounded-2xl p-4 shadow-lg">
-                <div className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">
-                  MENUNGGU
-                </div>
-                <div className="font-mono text-3xl font-black text-amber-400 mt-1">
+              <div className="bg-[#0a1633]/80 border border-blue-900/50 rounded-2xl p-4 shadow-xs">
+                <span className="text-[11px] text-amber-400 font-medium">Menunggu</span>
+                <div className="font-mono text-2xl sm:text-3xl font-bold text-amber-400 mt-1 tabular-nums">
                   {waitingTickets.length}
                 </div>
-                <div className="text-[10px] text-amber-300/80 mt-0.5">Dalam Ruang Tunggu</div>
+                <div className="text-[11px] text-slate-400 mt-1">Dalam ruang tunggu</div>
               </div>
 
-              <div className="bg-[#0a1736] border border-blue-900/80 rounded-2xl p-4 shadow-lg">
-                <div className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">
-                  DILAYANI
-                </div>
-                <div className="font-mono text-3xl font-black text-yellow-300 mt-1">
+              <div className="bg-[#0a1633]/80 border border-blue-900/50 rounded-2xl p-4 shadow-xs">
+                <span className="text-[11px] text-blue-400 font-medium">Dilayani</span>
+                <div className="font-mono text-2xl sm:text-3xl font-bold text-blue-300 mt-1 tabular-nums">
                   {servingTickets.length}
                 </div>
-                <div className="text-[10px] text-slate-400 mt-0.5">Sedang di Meja Loket</div>
+                <div className="text-[11px] text-slate-400 mt-1">Di meja loket</div>
               </div>
 
-              <div className="bg-[#0a1736] border border-blue-900/80 rounded-2xl p-4 shadow-lg">
-                <div className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">
-                  SELESAI
-                </div>
-                <div className="font-mono text-3xl font-black text-emerald-400 mt-1">
+              <div className="bg-[#0a1633]/80 border border-blue-900/50 rounded-2xl p-4 shadow-xs">
+                <span className="text-[11px] text-emerald-400 font-medium">Tuntas Selesai</span>
+                <div className="font-mono text-2xl sm:text-3xl font-bold text-emerald-400 mt-1 tabular-nums">
                   {finishedTickets.length}
                 </div>
-                <div className="text-[10px] text-emerald-400/80 mt-0.5">Pelayanan Tuntas</div>
+                <div className="text-[11px] text-slate-400 mt-1">Pelayanan tuntas</div>
               </div>
 
-              <div className="bg-[#0a1736] border border-blue-900/80 rounded-2xl p-4 shadow-lg">
-                <div className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">
-                  RATA-RATA WAKTU
+              <div className="bg-[#0a1633]/80 border border-blue-900/50 rounded-2xl p-4 shadow-xs">
+                <span className="text-[11px] text-slate-400 font-medium">Rata-rata Waktu</span>
+                <div className="font-mono text-2xl sm:text-3xl font-bold text-amber-400 mt-1 tabular-nums">
+                  {avgServiceTimeMinutes} <span className="text-sm font-sans font-medium text-slate-300">mnt</span>
                 </div>
-                <div className="font-mono text-3xl font-black text-amber-400 mt-1">
-                  {avgServiceTimeMinutes} <span className="text-sm font-sans font-bold">mnt</span>
-                </div>
-                <div className="text-[10px] text-slate-400 mt-0.5">Durasi per Pemohon</div>
+                <div className="text-[11px] text-slate-400 mt-1">Durasi per warga</div>
               </div>
 
-              <div className="bg-[#0a1736] border border-blue-900/80 rounded-2xl p-4 shadow-lg">
-                <div className="text-[11px] uppercase tracking-wider text-slate-400 font-bold flex items-center gap-1">
+              <div className="bg-[#0a1633]/80 border border-blue-900/50 rounded-2xl p-4 shadow-xs">
+                <span className="text-[11px] text-slate-400 font-medium flex items-center gap-1">
                   <MessageSquare className="w-3 h-3 text-amber-400" />
-                  SMS GATEWAY
-                </div>
-                <div className="font-mono text-3xl font-black text-amber-300 mt-1">
+                  SMS Gateway
+                </span>
+                <div className="font-mono text-2xl sm:text-3xl font-bold text-amber-300 mt-1 tabular-nums">
                   {smsLogs.length}
                 </div>
-                <div className="text-[10px] text-slate-400 mt-0.5">Notifikasi Terkirim</div>
+                <div className="text-[11px] text-slate-400 mt-1">Notifikasi terkirim</div>
               </div>
             </div>
 
             {/* Counter Workload Matrix */}
-            <div className="bg-[#0a1736] rounded-3xl p-6 border border-blue-900/80 shadow-xl">
-              <div className="flex items-center justify-between border-b border-blue-900/60 pb-4 mb-6">
+            <div className="bg-[#0a1633]/80 rounded-2xl p-6 border border-blue-900/50 shadow-sm">
+              <div className="flex items-center justify-between border-b border-blue-900/40 pb-4 mb-5">
                 <div>
-                  <h3 className="text-lg font-black text-white flex items-center gap-2">
-                    <Building className="w-5 h-5 text-amber-400" />
-                    PEMANTAUAN STATUS & BEBAN KERJA LOKET (LOKET 1 - 5)
-                  </h3>
+                  <h2 className="text-base font-bold text-white flex items-center gap-2">
+                    <Building className="w-4 h-4 text-amber-400" />
+                    Pemantauan Status & Beban Meja Loket (Loket 1 - 5)
+                  </h2>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    Kondisi operasional real-time setiap loket di Kantor Disdukcapil Keerom
+                    Kondisi operasional real-time setiap loket di Kantor Disdukcapil Kabupaten Keerom
                   </p>
                 </div>
                 <button
                   id="admin-refresh-data-btn"
                   onClick={onRefreshData}
-                  className="px-3 py-1.5 rounded-xl bg-blue-950 hover:bg-blue-900 text-amber-300 border border-amber-400/30 text-xs font-bold flex items-center gap-1.5 transition"
+                  className="px-3 py-1.5 rounded-xl bg-[#060e20] hover:bg-[#0e214d] text-slate-200 border border-blue-900/80 text-xs font-semibold flex items-center gap-1.5 transition active:scale-[0.98]"
                 >
-                  <RefreshCw className="w-3.5 h-3.5" />
+                  <RefreshCw className="w-3.5 h-3.5 text-amber-400" />
                   <span>Segarkan Data</span>
                 </button>
               </div>
@@ -469,12 +458,12 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
             <div className="bg-[#0a1736] rounded-3xl p-6 border border-blue-900/80 shadow-xl">
               <div className="flex items-center justify-between border-b border-blue-900/60 pb-3 mb-4">
                 <div className="flex items-center gap-2">
-                  <MessageSquare className="w-5 h-5 text-amber-400" />
-                  <h3 className="font-black text-white text-base">
-                    LOG PENGIRIMAN SMS GATEWAY TERBARU
-                  </h3>
+                  <MessageSquare className="w-4 h-4 text-amber-400" />
+                  <h2 className="font-bold text-white text-base">
+                    Log Pengiriman SMS Gateway Terbaru
+                  </h2>
                 </div>
-                <span className="text-xs text-amber-400 font-mono font-bold">
+                <span className="text-xs text-amber-400 font-mono font-medium">
                   Status: {settings.smsEnabled ? 'Aktif (Otomatis)' : 'Non-Aktif'}
                 </span>
               </div>
@@ -482,7 +471,7 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
               {smsLogs.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs text-left">
-                    <thead className="text-[11px] uppercase bg-[#0d1d40] text-amber-300 border-b border-blue-900/80 font-bold">
+                    <thead className="text-[11px] bg-[#060e20] text-amber-400 border-b border-blue-900/60 font-semibold">
                       <tr>
                         <th className="py-2.5 px-3">Waktu</th>
                         <th className="py-2.5 px-3">Nomor Antrian</th>
@@ -492,27 +481,27 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
                         <th className="py-2.5 px-3">Status Pengiriman</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-blue-900/40">
+                    <tbody className="divide-y divide-blue-900/30">
                       {smsLogs.slice(0, 8).map(log => (
-                        <tr key={log.id} className="hover:bg-[#0e214d]/60">
-                          <td className="py-2.5 px-3 font-mono text-slate-400">
+                        <tr key={log.id} className="hover:bg-[#060e20]/50 transition">
+                          <td className="py-2.5 px-3 font-mono text-slate-400 tabular-nums">
                             {new Date(log.timestamp).toLocaleTimeString('id-ID')} WIT
                           </td>
-                          <td className="py-2.5 px-3 font-mono font-black text-amber-300">
+                          <td className="py-2.5 px-3 font-mono font-bold text-amber-400 tabular-nums">
                             {log.ticketNumber}
                           </td>
                           <td className="py-2.5 px-3 font-medium text-white">
                             {log.citizenName || '-'}
                           </td>
-                          <td className="py-2.5 px-3 font-mono text-emerald-400 font-semibold">
+                          <td className="py-2.5 px-3 font-mono text-emerald-400 tabular-nums">
                             {log.phoneNumber}
                           </td>
                           <td className="py-2.5 px-3 text-slate-300">
                             {log.counterName}
                           </td>
                           <td className="py-2.5 px-3">
-                            <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-bold text-[10px]">
-                              TERKIRIM (DELIVERED)
+                            <span className="text-emerald-400 text-[11px] font-semibold">
+                              ● Terkirim (Delivered)
                             </span>
                           </td>
                         </tr>
@@ -528,22 +517,22 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
             </div>
 
             {/* EKSPOR & ARSIP DATA PELAYANAN LOKAL (JSON & CSV) */}
-            <div className="bg-gradient-to-br from-[#0c1a38] via-[#0e214d] to-[#0a1736] rounded-3xl p-6 border-2 border-amber-400/40 shadow-2xl">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-blue-900/80 pb-4 mb-5">
+            <div className="bg-[#0a1633]/80 rounded-2xl p-6 border border-blue-900/50 shadow-sm">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-blue-900/40 pb-4 mb-5">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/30 flex items-center justify-center font-black shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/30 flex items-center justify-center font-bold shrink-0">
                     <Database className="w-5 h-5" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="text-base font-black text-white">
-                        EKSPOR & ARSIP DATA PELAYANAN LOKAL
-                      </h3>
-                      <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded border border-emerald-500/40">
-                        OFFLINE ARCHIVE READY
+                      <h2 className="text-base font-bold text-white">
+                        Ekspor & Arsip Data Pelayanan Lokal
+                      </h2>
+                      <span className="text-xs text-emerald-400 font-medium">
+                        · Arsip Offline Mandiri
                       </span>
                     </div>
-                    <p className="text-xs text-slate-300 mt-0.5">
+                    <p className="text-xs text-slate-300 mt-0.5 max-w-2xl leading-relaxed text-pretty">
                       Simpan seluruh data tiket antrian, riwayat panggilan loket, notifikasi SMS, dan statistik ke file lokal (JSON / CSV).
                     </p>
                   </div>
@@ -551,7 +540,7 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
 
                 <button
                   onClick={() => triggerExport('json')}
-                  className="px-4 py-2 bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-slate-950 font-black rounded-xl text-xs flex items-center gap-2 shadow-md shadow-amber-400/20 transition shrink-0"
+                  className="px-4 py-2 bg-amber-400 hover:bg-amber-300 active:scale-[0.98] text-slate-950 font-bold rounded-xl text-xs flex items-center gap-2 shadow-sm transition shrink-0"
                 >
                   <Archive className="w-4 h-4" />
                   <span>Unduh Master Backup (.JSON)</span>
@@ -1575,35 +1564,35 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
             </button>
 
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shrink-0 shadow-lg shadow-amber-400/20">
+              <div className="w-12 h-12 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/30 flex items-center justify-center font-bold shrink-0">
                 <Download className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-xl font-black text-white">
-                  PUSAT EKSPOR & ARSIP DATA LOKAL
+                <h3 className="text-lg font-bold text-white">
+                  Pusat Ekspor & Arsip Data Lokal
                 </h3>
                 <p className="text-xs text-slate-300 mt-0.5">
-                  Unduh seluruh database antrian, log panggilan, notifikasi SMS, dan statistik ke komputer Anda.
+                  Unduh seluruh database antrian, riwayat panggilan, log notifikasi SMS, dan statistik harian.
                 </p>
               </div>
             </div>
 
-            {/* Quick Data Summary Badge */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6 bg-[#060e20] p-3 rounded-2xl border border-blue-900/80 text-center">
-              <div className="p-2">
-                <div className="text-[10px] uppercase font-bold text-slate-400">Total Tiket</div>
-                <div className="font-mono text-lg font-black text-amber-300">{tickets.length}</div>
+            {/* Quick Data Summary Bar */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-5 bg-[#060e20] p-3 rounded-xl border border-blue-900/60 text-center">
+              <div className="p-1.5">
+                <div className="text-[10px] text-slate-400">Total Tiket</div>
+                <div className="font-mono text-base font-bold text-amber-300 tabular-nums">{tickets.length}</div>
               </div>
-              <div className="p-2">
-                <div className="text-[10px] uppercase font-bold text-slate-400">Loket Aktif</div>
-                <div className="font-mono text-lg font-black text-white">{counters.filter(c => c.isOpen).length} / {counters.length}</div>
+              <div className="p-1.5">
+                <div className="text-[10px] text-slate-400">Loket Aktif</div>
+                <div className="font-mono text-base font-bold text-white tabular-nums">{counters.filter(c => c.isOpen).length} / {counters.length}</div>
               </div>
-              <div className="p-2">
-                <div className="text-[10px] uppercase font-bold text-slate-400">SMS Terkirim</div>
-                <div className="font-mono text-lg font-black text-emerald-400">{smsLogs.length}</div>
+              <div className="p-1.5">
+                <div className="text-[10px] text-slate-400">SMS Terkirim</div>
+                <div className="font-mono text-base font-bold text-emerald-400 tabular-nums">{smsLogs.length}</div>
               </div>
-              <div className="p-2">
-                <div className="text-[10px] uppercase font-bold text-slate-400">Format File</div>
+              <div className="p-1.5">
+                <div className="text-[10px] text-slate-400">Format File</div>
                 <div className="font-mono text-xs font-bold text-amber-400 mt-1">JSON & CSV</div>
               </div>
             </div>
@@ -1611,126 +1600,126 @@ export const AdminPanelView: React.FC<AdminPanelViewProps> = ({
             {/* Export List Options */}
             <div className="space-y-3">
               {/* Option 1: Master JSON Archive */}
-              <div className="bg-[#060e20] p-4 rounded-2xl border border-blue-900/80 hover:border-amber-400/60 transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="bg-[#060e20] p-4 rounded-xl border border-blue-900/60 hover:border-amber-400/40 transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/30 flex items-center justify-center shrink-0 mt-0.5">
-                    <FileCode className="w-5 h-5" />
+                  <div className="w-9 h-9 rounded-lg bg-amber-400/10 text-amber-400 border border-amber-400/30 flex items-center justify-center shrink-0 mt-0.5">
+                    <FileCode className="w-4 h-4" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-bold text-white">Arsip Master Lengkap (.JSON)</h4>
-                      <span className="text-[10px] bg-amber-400/20 text-amber-300 font-mono px-2 py-0.5 rounded font-bold">
-                        RECOMMENDED BACKUP
+                      <h4 className="text-xs sm:text-sm font-bold text-white">Arsip Master Lengkap (.JSON)</h4>
+                      <span className="text-[11px] text-amber-400 font-semibold font-mono">
+                        · Backup Utama
                       </span>
                     </div>
                     <p className="text-xs text-slate-400 mt-0.5">
-                      Berisi seluruh struktur data sistem: profil dinas, semua data tiket, status loket, log panggilan, log SMS, dan ringkasan statistik.
+                      Memuat seluruh struktur data sistem: profil dinas, seluruh tiket, status loket, log panggilan, log SMS, dan rekapitulasi statistik.
                     </p>
                   </div>
                 </div>
                 <button
                   id="modal-export-json-btn"
                   onClick={() => triggerExport('json')}
-                  className="w-full sm:w-auto px-4 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md shadow-amber-400/20 transition shrink-0"
+                  className="w-full sm:w-auto px-4 py-2 bg-amber-400 hover:bg-amber-300 active:scale-[0.98] text-slate-950 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm transition shrink-0"
                 >
-                  <Download className="w-4 h-4" />
+                  <Download className="w-3.5 h-3.5" />
                   <span>Unduh JSON</span>
                 </button>
               </div>
 
               {/* Option 2: Tickets CSV */}
-              <div className="bg-[#060e20] p-4 rounded-2xl border border-blue-900/80 hover:border-emerald-400/60 transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="bg-[#060e20] p-4 rounded-xl border border-blue-900/60 hover:border-emerald-400/40 transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0 mt-0.5">
-                    <FileSpreadsheet className="w-5 h-5" />
+                  <div className="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0 mt-0.5">
+                    <FileSpreadsheet className="w-4 h-4" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-bold text-white">Data Antrian Tabular (.CSV)</h4>
-                      <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-mono px-2 py-0.5 rounded font-bold">
-                        EXCEL / SPREADSHEET
+                      <h4 className="text-xs sm:text-sm font-bold text-white">Data Antrian Tabular (.CSV)</h4>
+                      <span className="text-[11px] text-emerald-400 font-semibold font-mono">
+                        · Excel / Spreadsheet
                       </span>
                     </div>
                     <p className="text-xs text-slate-400 mt-0.5">
-                      Tabel rinci seluruh nomor antrian, nama pemohon, NIK, HP, distrik, waktu ambil tiket, waktu dipanggil, durasi selesai, dan catatan petugas.
+                      Daftar terperinci nomor tiket, nama pemohon, NIK, No HP, asal distrik, waktu ambil, durasi layanan, dan catatan petugas.
                     </p>
                   </div>
                 </div>
                 <button
                   id="modal-export-csv-tickets-btn"
                   onClick={() => triggerExport('csv_tickets')}
-                  className="w-full sm:w-auto px-4 py-2.5 bg-emerald-950 hover:bg-emerald-500 hover:text-slate-950 text-emerald-300 font-bold rounded-xl text-xs border border-emerald-500/40 flex items-center justify-center gap-1.5 transition shrink-0"
+                  className="w-full sm:w-auto px-4 py-2 bg-[#0a1736] hover:bg-emerald-500 hover:text-slate-950 text-emerald-300 font-bold rounded-xl text-xs border border-emerald-500/40 active:scale-[0.98] flex items-center justify-center gap-1.5 transition shrink-0"
                 >
-                  <Download className="w-4 h-4" />
+                  <Download className="w-3.5 h-3.5" />
                   <span>Unduh CSV Antrian</span>
                 </button>
               </div>
 
               {/* Option 3: Call & SMS Logs CSV */}
-              <div className="bg-[#060e20] p-4 rounded-2xl border border-blue-900/80 hover:border-blue-400/60 transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="bg-[#060e20] p-4 rounded-xl border border-blue-900/60 hover:border-blue-400/40 transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/30 flex items-center justify-center shrink-0 mt-0.5">
-                    <Phone className="w-5 h-5" />
+                  <div className="w-9 h-9 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/30 flex items-center justify-center shrink-0 mt-0.5">
+                    <Phone className="w-4 h-4" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-bold text-white">Log Panggilan Loket & SMS (.CSV)</h4>
-                      <span className="text-[10px] bg-blue-500/20 text-blue-300 font-mono px-2 py-0.5 rounded font-bold">
-                        AUDIT LOG
+                      <h4 className="text-xs sm:text-sm font-bold text-white">Log Panggilan Loket & SMS (.CSV)</h4>
+                      <span className="text-[11px] text-blue-400 font-semibold font-mono">
+                        · Log Audit
                       </span>
                     </div>
                     <p className="text-xs text-slate-400 mt-0.5">
-                      Jejak audit pemanggilan nomor di tiap loket (waktu panggil, nama petugas, counter) beserta riwayat SMS pengingat warga.
+                      Jejak audit pemanggilan nomor loket beserta catatan pengiriman notifikasi SMS gateway kepada warga pemohon.
                     </p>
                   </div>
                 </div>
                 <button
                   id="modal-export-csv-calls-btn"
                   onClick={() => triggerExport('csv_calls')}
-                  className="w-full sm:w-auto px-4 py-2.5 bg-blue-950 hover:bg-blue-500 hover:text-white text-blue-300 font-bold rounded-xl text-xs border border-blue-500/40 flex items-center justify-center gap-1.5 transition shrink-0"
+                  className="w-full sm:w-auto px-4 py-2 bg-[#0a1736] hover:bg-blue-500 hover:text-white text-blue-300 font-bold rounded-xl text-xs border border-blue-500/40 active:scale-[0.98] flex items-center justify-center gap-1.5 transition shrink-0"
                 >
-                  <Download className="w-4 h-4" />
+                  <Download className="w-3.5 h-3.5" />
                   <span>Unduh Log CSV</span>
                 </button>
               </div>
 
               {/* Option 4: Summary Stats CSV */}
-              <div className="bg-[#060e20] p-4 rounded-2xl border border-blue-900/80 hover:border-purple-400/60 transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="bg-[#060e20] p-4 rounded-xl border border-blue-900/60 hover:border-purple-400/40 transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/30 flex items-center justify-center shrink-0 mt-0.5">
-                    <BarChart3 className="w-5 h-5" />
+                  <div className="w-9 h-9 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/30 flex items-center justify-center shrink-0 mt-0.5">
+                    <BarChart3 className="w-4 h-4" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-bold text-white">Rekapitulasi Statistik (.CSV)</h4>
-                      <span className="text-[10px] bg-purple-500/20 text-purple-300 font-mono px-2 py-0.5 rounded font-bold">
-                        EXECUTIVE SUMMARY
+                      <h4 className="text-xs sm:text-sm font-bold text-white">Rekapitulasi Statistik (.CSV)</h4>
+                      <span className="text-[11px] text-purple-400 font-semibold font-mono">
+                        · Ringkasan Eksekutif
                       </span>
                     </div>
                     <p className="text-xs text-slate-400 mt-0.5">
-                      Ringkasan eksekutif KPI pelayanan harian, rincian per loket dan layanan, serta sebaran persentase distrik pemohon.
+                      Ringkasan eksekutif indikator pelayanan harian, rincian beban loket & jenis dokumen, serta persentase sebaran distrik pemohon.
                     </p>
                   </div>
                 </div>
                 <button
                   id="modal-export-csv-stats-btn"
                   onClick={() => triggerExport('csv_stats')}
-                  className="w-full sm:w-auto px-4 py-2.5 bg-purple-950 hover:bg-purple-500 hover:text-white text-purple-300 font-bold rounded-xl text-xs border border-purple-500/40 flex items-center justify-center gap-1.5 transition shrink-0"
+                  className="w-full sm:w-auto px-4 py-2 bg-[#0a1736] hover:bg-purple-500 hover:text-white text-purple-300 font-bold rounded-xl text-xs border border-purple-500/40 active:scale-[0.98] flex items-center justify-center gap-1.5 transition shrink-0"
                 >
-                  <Download className="w-4 h-4" />
+                  <Download className="w-3.5 h-3.5" />
                   <span>Unduh Statistik CSV</span>
                 </button>
               </div>
             </div>
 
             {/* Modal Footer */}
-            <div className="flex items-center justify-between pt-5 mt-6 border-t border-blue-900/80">
+            <div className="flex items-center justify-between pt-4 mt-5 border-t border-blue-900/50">
               <span className="text-[11px] text-slate-400">
                 File otomatis diformat dengan UTF-8 BOM agar rapi saat dibuka di Microsoft Excel.
               </span>
               <button
                 onClick={() => setShowExportModal(false)}
-                className="px-5 py-2 rounded-xl bg-blue-950 hover:bg-blue-900 text-slate-200 border border-blue-800 font-bold text-xs transition"
+                className="px-4 py-1.5 rounded-xl bg-[#060e20] hover:bg-[#0e214d] text-slate-200 border border-blue-900/80 font-semibold text-xs transition"
               >
                 Tutup
               </button>
